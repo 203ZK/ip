@@ -1,10 +1,22 @@
+import java.util.Scanner;
+
 public class Travis {
     public static void main(String[] args) {
-        String HORIZONTAL_LINE = "____________________________________________________________";
-        String introduction = "\nHello! I'm Travis\n";
-        String greeting = "What can I do for you?\n";
-        String farewell = "\nBye. Hope to see you again soon!\n";
+        String greeting = "Hello! I'm Travis\nWhat can I do for you?";
+        String farewell = "Bye. Hope to see you again soon!";
+        System.out.println(wrapInHorizontalLines(greeting));
 
-        System.out.println(HORIZONTAL_LINE + introduction + greeting + HORIZONTAL_LINE + farewell + HORIZONTAL_LINE);
+        Scanner scanner = new Scanner(System.in);
+        String input = scanner.nextLine();
+        while (!input.equals("bye")) {
+            System.out.println(wrapInHorizontalLines(input + "\nOh don't be boring, say something else!"));
+            input = scanner.nextLine();
+        }
+        System.out.println(wrapInHorizontalLines(farewell));
+    }
+
+    private static String wrapInHorizontalLines(String content) {
+        String HORIZONTAL_LINE = "____________________________________________________________";
+        return HORIZONTAL_LINE + "\n" + content + "\n" + HORIZONTAL_LINE + "\n";
     }
 }
