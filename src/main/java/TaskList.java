@@ -9,12 +9,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class TaskList {
-    private final Task[] tasks;
-    private int numOfTasks;
-
     private static final Pattern toDoPattern = Pattern.compile(Constants.TO_DO_REGEX);
     private static final Pattern deadlinePattern = Pattern.compile(Constants.DEADLINE_REGEX);
     private static final Pattern eventPattern = Pattern.compile(Constants.EVENT_REGEX);
+    private final Task[] tasks;
+    private int numOfTasks;
 
     public TaskList() {
         int MAX_SIZE = 100;
@@ -41,19 +40,25 @@ public class TaskList {
             String end = eventMatcher.group(3);
             newTask = new Event(taskDescription, start, end);
         } else {
-            throw new InvalidTaskException("Invalid task!");
+            throw new InvalidTaskException(Constants.UNKNOWN_INPUT);
         }
 
         this.tasks[this.numOfTasks] = newTask;
         this.numOfTasks++;
-        return Constants.NEW_TASK_ADDED + newTask;
+        return Constants.NEW_TASK_ADDED + newTask + String.format(Constants.TOTAL_NUMBER_OF_TASKS, this.numOfTasks);
     }
 
     public void markTaskAsDone(int taskNumber) throws TaskNotFoundException {
         if (taskNumber >= 0 && taskNumber < this.numOfTasks) {
             this.tasks[taskNumber].markAsDone();
+        } else if (this.numOfTasks == 0) {
+            throw new TaskNotFoundException(
+                    Constants.COULD_NOT_FIND_TASK + (taskNumber + 1) + "\n" +
+                            Constants.TRY_ADDING_TASKS);
         } else {
-            throw new TaskNotFoundException(Constants.COULD_NOT_FIND_TASK + (taskNumber + 1));
+            throw new TaskNotFoundException(
+                    Constants.COULD_NOT_FIND_TASK + (taskNumber + 1) + " \n" +
+                            Constants.SELECT_TASK_WITHIN_RANGE + "1 to " + this.numOfTasks);
         }
     }
 
