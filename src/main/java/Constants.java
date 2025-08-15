@@ -1,6 +1,10 @@
 public final class Constants {
     private Constants() {}
 
+    // Regular expressions
+    public static final String MARK_AS_DONE_REGEX = "^mark (\\d+)$";
+    public static final String MARK_AS_NOT_DONE_REGEX = "^unmark (\\d+)$";
+
     // TaskList.java constants
     public static final String NEW_TASK_ADDED = "A new task has been added: ";
     public static final String COULD_NOT_FIND_TASK = "Could not find task with task number: ";

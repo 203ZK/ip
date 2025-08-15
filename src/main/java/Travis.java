@@ -1,7 +1,11 @@
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Travis {
     private final TaskList tasks;
+    private static final Pattern markAsDonePattern = Pattern.compile(Constants.MARK_AS_DONE_REGEX);
+    private static final Pattern markAsNotDonePattern = Pattern.compile(Constants.MARK_AS_NOT_DONE_REGEX);
 
     public Travis() {
         this.tasks = new TaskList();
@@ -29,28 +33,34 @@ public class Travis {
     }
 
     private void markTaskAsDone(String input) {
-        String taskNumberStr = input.substring(5).trim();
-        try {
-            int taskNumber = Integer.parseInt(taskNumberStr);
-            this.tasks.markTaskAsDone(taskNumber - 1);
-            wrap(Constants.MARKED_AS_DONE + this.tasks.displayTask(taskNumber - 1));
-        } catch (NumberFormatException e) { // If unable to match task number, treat as an actual task
-            addTask(input);
-        } catch (TaskNotFoundException e) {
-            wrap(e.getMessage());
+        Matcher matcher = markAsDonePattern.matcher(input);
+        if (matcher.find()) {
+            String taskNumberStr = matcher.group(1);
+            try {
+                int taskNumber = Integer.parseInt(taskNumberStr);
+                this.tasks.markTaskAsDone(taskNumber - 1);
+                wrap(Constants.MARKED_AS_DONE + this.tasks.displayTask(taskNumber - 1));
+            } catch (NumberFormatException e) { // If unable to match task number, treat as an actual task
+                addTask(input);
+            } catch (TaskNotFoundException e) {
+                wrap(e.getMessage());
+            }
         }
     }
 
     private void markTaskAsNotDone(String input) {
-        String taskNumberStr = input.substring(6).trim();
-        try {
-            int taskNumber = Integer.parseInt(taskNumberStr);
-            this.tasks.markTaskAsNotDone(taskNumber - 1);
-            wrap(Constants.MARKED_AS_NOT_DONE + this.tasks.displayTask(taskNumber - 1));
-        } catch (NumberFormatException e) { // If unable to match task number, treat as an actual task
-            addTask(input);
-        } catch (TaskNotFoundException e) {
-            wrap(e.getMessage());
+        Matcher matcher = markAsNotDonePattern.matcher(input);
+        if (matcher.find()) {
+            String taskNumberStr = matcher.group(1);
+            try {
+                int taskNumber = Integer.parseInt(taskNumberStr);
+                this.tasks.markTaskAsNotDone(taskNumber - 1);
+                wrap(Constants.MARKED_AS_NOT_DONE + this.tasks.displayTask(taskNumber - 1));
+            } catch (NumberFormatException e) { // If unable to match task number, treat as an actual task
+                addTask(input);
+            } catch (TaskNotFoundException e) {
+                wrap(e.getMessage());
+            }
         }
     }
 
@@ -61,11 +71,11 @@ public class Travis {
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine().trim();
         while (!input.equals("bye")) {
-            String lowercaseInput = input.toLowerCase();
+            String lowercaseInput = input.toLowerCase().trim();
 
-            if (lowercaseInput.startsWith("mark ")) {
+            if (markAsDonePattern.matcher(lowercaseInput).matches()) {
                 travis.markTaskAsDone(lowercaseInput);
-            } else if (lowercaseInput.startsWith("unmark ")) {
+            } else if (markAsNotDonePattern.matcher(lowercaseInput).matches()) {
                 travis.markTaskAsNotDone(lowercaseInput);
             } else if (lowercaseInput.equals("list")) {
                 travis.listTasks();
