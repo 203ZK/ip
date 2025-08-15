@@ -4,6 +4,7 @@ public final class Constants {
     // TaskList.java constants
     public static final String NEW_TASK_ADDED = "A new task has been added: ";
     public static final String TOTAL_NUMBER_OF_TASKS = "\nNow you have %d task(s) in your list.";
+    public static final String NO_TASKS = "You have no tasks right now.";
     public static final String COULD_NOT_FIND_TASK = "Could not find task with task number: ";
     public static final String TRY_ADDING_TASKS = "Try adding some tasks!";
     public static final String SELECT_TASK_WITHIN_RANGE = "Please select a task number from the range ";
