@@ -1,0 +1,12 @@
+bad task
+todo buy bread
+deadline submit homework /by Wednesday
+event hackathon /from 18 Jul /to 20 Jul
+list
+mark 2
+mark 3
+list
+unmark 3
+list
+mark 4
+bye
