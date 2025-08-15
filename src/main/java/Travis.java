@@ -1,9 +1,13 @@
+import exceptions.InvalidTaskException;
+import exceptions.TaskNotFoundException;
+
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Travis {
     private final TaskList tasks;
+
     private static final Pattern markAsDonePattern = Pattern.compile(Constants.MARK_AS_DONE_REGEX);
     private static final Pattern markAsNotDonePattern = Pattern.compile(Constants.MARK_AS_NOT_DONE_REGEX);
 
@@ -71,21 +75,27 @@ public class Travis {
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine().trim();
         while (!input.equals("bye")) {
-            String lowercaseInput = input.toLowerCase().trim();
+            Matcher markAsDoneMatcher = markAsDonePattern.matcher(input);
+            Matcher markAsNotDoneMatcher = markAsNotDonePattern.matcher(input);
 
-            if (markAsDonePattern.matcher(lowercaseInput).matches()) {
-                travis.markTaskAsDone(lowercaseInput);
-            } else if (markAsNotDonePattern.matcher(lowercaseInput).matches()) {
-                travis.markTaskAsNotDone(lowercaseInput);
-            } else if (lowercaseInput.equals("list")) {
+            if (markAsDoneMatcher.matches()) {
+                travis.markTaskAsDone(input);
+            } else if (markAsNotDoneMatcher.matches()) {
+                travis.markTaskAsNotDone(input);
+            } else if (input.equals("list")) {
                 travis.listTasks();
             } else {
-                travis.addTask(lowercaseInput);
+                try {
+                    travis.addTask(input);
+                } catch (InvalidTaskException e) {
+                    wrap(e.getMessage());
+                }
             }
 
             input = scanner.nextLine().trim();
         }
 
         farewell();
+        scanner.close();
     }
 }

@@ -1,6 +1,20 @@
+import exceptions.InvalidTaskException;
+import exceptions.TaskNotFoundException;
+import tasks.Deadline;
+import tasks.Event;
+import tasks.Task;
+import tasks.ToDo;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class TaskList {
     private final Task[] tasks;
     private int numOfTasks;
+
+    private static final Pattern toDoPattern = Pattern.compile(Constants.TO_DO_REGEX);
+    private static final Pattern deadlinePattern = Pattern.compile(Constants.DEADLINE_REGEX);
+    private static final Pattern eventPattern = Pattern.compile(Constants.EVENT_REGEX);
 
     public TaskList() {
         int MAX_SIZE = 100;
@@ -8,10 +22,31 @@ public class TaskList {
         this.numOfTasks = 0;
     }
 
-    public String addTask(String task) {
-        this.tasks[this.numOfTasks] = new Task(task);
+    public String addTask(String input) throws InvalidTaskException {
+        Matcher toDoMatcher = toDoPattern.matcher(input);
+        Matcher deadlineMatcher = deadlinePattern.matcher(input);
+        Matcher eventMatcher = eventPattern.matcher(input);
+
+        Task newTask;
+        if (toDoMatcher.find()) {
+            String taskDescription = toDoMatcher.group(1);
+            newTask = new ToDo(taskDescription);
+        } else if (deadlineMatcher.find()) {
+            String taskDescription = deadlineMatcher.group(1);
+            String deadline = deadlineMatcher.group(2);
+            newTask = new Deadline(taskDescription, deadline);
+        } else if (eventMatcher.find()) {
+            String taskDescription = eventMatcher.group(1);
+            String start = eventMatcher.group(2);
+            String end = eventMatcher.group(3);
+            newTask = new Event(taskDescription, start, end);
+        } else {
+            throw new InvalidTaskException("Invalid task!");
+        }
+
+        this.tasks[this.numOfTasks] = newTask;
         this.numOfTasks++;
-        return Constants.NEW_TASK_ADDED + task;
+        return Constants.NEW_TASK_ADDED + newTask;
     }
 
     public void markTaskAsDone(int taskNumber) throws TaskNotFoundException {
