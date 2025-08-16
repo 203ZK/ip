@@ -2,8 +2,6 @@ public final class Constants {
     private Constants() {}
 
     // TaskList.java constants
-    public static final String NEW_TASK_ADDED = "A new task has been added: ";
-    public static final String TOTAL_NUMBER_OF_TASKS = "\nNow you have %d task(s) in your list.";
     public static final String NO_TASKS = "You have no tasks right now.";
     public static final String COULD_NOT_FIND_TASK = "Could not find task with task number: ";
     public static final String TRY_ADDING_TASKS = "Try adding some tasks!";
@@ -20,11 +18,15 @@ public final class Constants {
     public static final String EVENT_REGEX = "event (.*) /from (.+) /to (.+)";
     public static final String MARK_AS_DONE_REGEX = "^mark (\\d+)$";
     public static final String MARK_AS_NOT_DONE_REGEX = "^unmark (\\d+)$";
+    public static final String DELETE_TASK_REGEX = "^delete (\\d+)$";
 
     // Travis.java constants
     public static final String GREETING = "Hello! I'm Travis!\nWhat can I do for you?";
     public static final String FAREWELL = "Bye. Hope to see you again soon!";
     public static final String HORIZONTAL_LINE = "____________________________________________________________";
-    public static final String MARKED_AS_DONE = "Nice! I've marked this task as done:\n";
-    public static final String MARKED_AS_NOT_DONE = "Ok, I've marked this task as not done yet:\n";
+    public static final String TOTAL_TASKS = "Now you have %d task(s) in your list.";
+    public static final String NEW_TASK = "A new task has been added: %s\n";
+    public static final String DELETED_TASK = "Noted. I have deleted the following task: %s\n";
+    public static final String MARKED_AS_DONE = "Nice! I've marked this task as done: %s";
+    public static final String MARKED_AS_NOT_DONE = "Ok, I've marked this task as not done yet: %s";
 }

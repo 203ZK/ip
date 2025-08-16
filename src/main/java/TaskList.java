@@ -19,62 +19,66 @@ public class TaskList {
         this.tasks = new ArrayList<>();
     }
 
-    public String addTask(String input) throws InvalidTaskException {
+    public int getTaskCount() {
+        return this.tasks.size();
+    }
+
+    public Task getTask(int taskNumber) throws TaskNotFoundException {
+        if (taskNumber >= 0 && taskNumber < this.tasks.size()) {
+            return this.tasks.get(taskNumber);
+        } else if (this.tasks.isEmpty()) {
+            throw new TaskNotFoundException(
+                    Constants.COULD_NOT_FIND_TASK + (taskNumber + 1) + "\n" +
+                            Constants.TRY_ADDING_TASKS);
+        } else {
+            throw new TaskNotFoundException(
+                    Constants.COULD_NOT_FIND_TASK + (taskNumber + 1) + " \n" +
+                            Constants.SELECT_TASK_WITHIN_RANGE + "1 to " + this.tasks.size() + ".");
+        }
+    }
+
+    public Task addTask(String input) throws InvalidTaskException {
         Matcher toDoMatcher = toDoPattern.matcher(input);
         Matcher deadlineMatcher = deadlinePattern.matcher(input);
         Matcher eventMatcher = eventPattern.matcher(input);
 
-        Task newTask;
+        Task task;
         if (toDoMatcher.find()) {
             String taskDescription = toDoMatcher.group(1);
-            newTask = new ToDo(taskDescription);
+            task = new ToDo(taskDescription);
         } else if (deadlineMatcher.find()) {
             String taskDescription = deadlineMatcher.group(1);
             String deadline = deadlineMatcher.group(2);
-            newTask = new Deadline(taskDescription, deadline);
+            task = new Deadline(taskDescription, deadline);
         } else if (eventMatcher.find()) {
             String taskDescription = eventMatcher.group(1);
             String start = eventMatcher.group(2);
             String end = eventMatcher.group(3);
-            newTask = new Event(taskDescription, start, end);
+            task = new Event(taskDescription, start, end);
         } else {
             throw new InvalidTaskException(Constants.UNKNOWN_INPUT);
         }
 
-        this.tasks.add(newTask);
-        return Constants.NEW_TASK_ADDED + newTask + String.format(Constants.TOTAL_NUMBER_OF_TASKS, this.tasks.size());
+        this.tasks.add(task);
+        return task;
     }
 
-    public void markTaskAsDone(int taskNumber) throws TaskNotFoundException {
-        if (taskNumber >= 0 && taskNumber < this.tasks.size()) {
-            this.tasks.get(taskNumber).markAsDone();
-        } else if (this.tasks.isEmpty()) {
-            throw new TaskNotFoundException(
-                    Constants.COULD_NOT_FIND_TASK + (taskNumber + 1) + "\n" +
-                            Constants.TRY_ADDING_TASKS);
-        } else {
-            throw new TaskNotFoundException(
-                    Constants.COULD_NOT_FIND_TASK + (taskNumber + 1) + " \n" +
-                            Constants.SELECT_TASK_WITHIN_RANGE + "1 to " + this.tasks.size() + ".");
-        }
+    public Task deleteTask(int taskNumber) throws TaskNotFoundException {
+        Task task = this.getTask(taskNumber - 1);
+        this.tasks.remove(taskNumber - 1);
+        return task;
     }
 
-    public void markTaskAsNotDone(int taskNumber) {
-        if (taskNumber >= 0 && taskNumber < this.tasks.size()) {
-            this.tasks.get(taskNumber).markAsNotDone();
-        } else if (this.tasks.isEmpty()) {
-            throw new TaskNotFoundException(
-                    Constants.COULD_NOT_FIND_TASK + (taskNumber + 1) + "\n" +
-                            Constants.TRY_ADDING_TASKS);
-        } else {
-            throw new TaskNotFoundException(
-                    Constants.COULD_NOT_FIND_TASK + (taskNumber + 1) + " \n" +
-                            Constants.SELECT_TASK_WITHIN_RANGE + "1 to " + this.tasks.size() + ".");
-        }
+    public Task markTaskAsDone(int taskNumber) throws TaskNotFoundException {
+        Task task = this.getTask(taskNumber - 1);
+        task.markAsDone();
+        return task;
     }
 
-    public String displayTask(int taskNumber) {
-        return this.tasks.get(taskNumber).toString();
+    public Task markTaskAsNotDone(int taskNumber) throws TaskNotFoundException {
+        Task task = this.getTask(taskNumber - 1);
+        task.markAsNotDone();
+        return task;
     }
 
     @Override

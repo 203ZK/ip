@@ -1,15 +1,16 @@
 import exceptions.InvalidTaskException;
 import exceptions.TaskNotFoundException;
+import tasks.Task;
 
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Travis {
-    private final TaskList tasks;
-
     private static final Pattern markAsDonePattern = Pattern.compile(Constants.MARK_AS_DONE_REGEX);
     private static final Pattern markAsNotDonePattern = Pattern.compile(Constants.MARK_AS_NOT_DONE_REGEX);
+    private static final Pattern deleteTaskPattern = Pattern.compile(Constants.DELETE_TASK_REGEX);
+    private final TaskList tasks;
 
     public Travis() {
         this.tasks = new TaskList();
@@ -32,39 +33,43 @@ public class Travis {
     }
 
     private void addTask(String input) {
-        String newTask = this.tasks.addTask(input);
-        wrap(newTask);
-    }
-
-    private void markTaskAsDone(String input) {
-        Matcher matcher = markAsDonePattern.matcher(input);
-        if (matcher.find()) {
-            String taskNumberStr = matcher.group(1);
-            try {
-                int taskNumber = Integer.parseInt(taskNumberStr);
-                this.tasks.markTaskAsDone(taskNumber - 1);
-                wrap(Constants.MARKED_AS_DONE + this.tasks.displayTask(taskNumber - 1));
-            } catch (NumberFormatException e) { // If unable to match task number, treat as an actual task
-                addTask(input);
-            } catch (TaskNotFoundException e) {
-                wrap(e.getMessage());
-            }
+        try {
+            Task newTask = this.tasks.addTask(input);
+            wrap(String.format(Constants.NEW_TASK, newTask) +
+                    String.format(Constants.TOTAL_TASKS, this.tasks.getTaskCount()));
+        } catch (InvalidTaskException e) {
+            wrap(e.getMessage());
         }
     }
 
-    private void markTaskAsNotDone(String input) {
-        Matcher matcher = markAsNotDonePattern.matcher(input);
-        if (matcher.find()) {
-            String taskNumberStr = matcher.group(1);
-            try {
-                int taskNumber = Integer.parseInt(taskNumberStr);
-                this.tasks.markTaskAsNotDone(taskNumber - 1);
-                wrap(Constants.MARKED_AS_NOT_DONE + this.tasks.displayTask(taskNumber - 1));
-            } catch (NumberFormatException e) { // If unable to match task number, treat as an actual task
-                addTask(input);
-            } catch (TaskNotFoundException e) {
-                wrap(e.getMessage());
-            }
+    private void deleteTask(String taskNumberStr) {
+        try {
+            int taskNumber = Integer.parseInt(taskNumberStr);
+            Task deletedTask = this.tasks.deleteTask(taskNumber);
+            wrap(String.format(Constants.DELETED_TASK, deletedTask) +
+                    String.format(Constants.TOTAL_TASKS, this.tasks.getTaskCount()));
+        } catch (TaskNotFoundException e) {
+            wrap(e.getMessage());
+        }
+    }
+
+    private void markTaskAsDone(String taskNumberStr) {
+        try {
+            int taskNumber = Integer.parseInt(taskNumberStr);
+            Task completedTask = this.tasks.markTaskAsDone(taskNumber);
+            wrap(String.format(Constants.MARKED_AS_DONE, completedTask));
+        } catch (TaskNotFoundException e) {
+            wrap(e.getMessage());
+        }
+    }
+
+    private void markTaskAsNotDone(String taskNumberStr) {
+        try {
+            int taskNumber = Integer.parseInt(taskNumberStr);
+            Task incompleteTask = this.tasks.markTaskAsNotDone(taskNumber);
+            wrap(String.format(Constants.MARKED_AS_NOT_DONE, incompleteTask));
+        } catch (TaskNotFoundException e) {
+            wrap(e.getMessage());
         }
     }
 
@@ -74,14 +79,18 @@ public class Travis {
 
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine().trim();
+
         while (!input.equals("bye")) {
             Matcher markAsDoneMatcher = markAsDonePattern.matcher(input);
             Matcher markAsNotDoneMatcher = markAsNotDonePattern.matcher(input);
+            Matcher deleteTaskMatcher = deleteTaskPattern.matcher(input);
 
             if (markAsDoneMatcher.matches()) {
-                travis.markTaskAsDone(input);
+                travis.markTaskAsDone(markAsDoneMatcher.group(1));
             } else if (markAsNotDoneMatcher.matches()) {
-                travis.markTaskAsNotDone(input);
+                travis.markTaskAsNotDone(markAsNotDoneMatcher.group(1));
+            } else if (deleteTaskMatcher.matches()) {
+                travis.deleteTask(deleteTaskMatcher.group(1));
             } else if (input.equals("list")) {
                 travis.listTasks();
             } else {
