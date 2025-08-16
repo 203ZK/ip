@@ -4,56 +4,49 @@ What can I do for you?
 ____________________________________________________________
 
 ____________________________________________________________
-Invalid task!
+You have no tasks right now. Try adding some tasks!
+____________________________________________________________
+
+____________________________________________________________
+Could not find task with task number: 1
+Try adding some tasks!
 ____________________________________________________________
 
 ____________________________________________________________
 A new task has been added: [T][ ] buy bread
+Now you have 1 task(s) in your list.
 ____________________________________________________________
 
 ____________________________________________________________
-A new task has been added: [D][ ] submit homework (by: Wednesday)
+A new task has been added: [D][ ] submit homework (by: friday)
+Now you have 2 task(s) in your list.
 ____________________________________________________________
 
 ____________________________________________________________
-A new task has been added: [E][ ] hackathon (from: 18 Jul to: 20 Jul)
+A new task has been added: [E][ ] conference (from: 18 aug to: 20 aug)
+Now you have 3 task(s) in your list.
 ____________________________________________________________
 
 ____________________________________________________________
-1. [T][ ] buy bread
-2. [D][ ] submit homework (by: Wednesday)
-3. [E][ ] hackathon (from: 18 Jul to: 20 Jul)
+Nice! I've marked this task as done: [T][X] buy bread
 ____________________________________________________________
 
 ____________________________________________________________
-Nice! I've marked this task as done:
-[D][X] submit homework (by: Wednesday)
+Nice! I've marked this task as done: [D][X] submit homework (by: friday)
 ____________________________________________________________
 
 ____________________________________________________________
-Nice! I've marked this task as done:
-[E][X] hackathon (from: 18 Jul to: 20 Jul)
+Ok, I've marked this task as not done yet: [T][ ] buy bread
 ____________________________________________________________
 
 ____________________________________________________________
-1. [T][ ] buy bread
-2. [D][X] submit homework (by: Wednesday)
-3. [E][X] hackathon (from: 18 Jul to: 20 Jul)
-____________________________________________________________
-
-____________________________________________________________
-Ok, I've marked this task as not done yet:
-[E][ ] hackathon (from: 18 Jul to: 20 Jul)
+Noted. I have deleted the following task: [E][ ] conference (from: 18 aug to: 20 aug)
+Now you have 2 task(s) in your list.
 ____________________________________________________________
 
 ____________________________________________________________
 1. [T][ ] buy bread
-2. [D][X] submit homework (by: Wednesday)
-3. [E][ ] hackathon (from: 18 Jul to: 20 Jul)
-____________________________________________________________
-
-____________________________________________________________
-Could not find task with task number: 4
+2. [D][X] submit homework (by: friday)
 ____________________________________________________________
 
 ____________________________________________________________

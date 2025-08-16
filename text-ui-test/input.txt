@@ -1,12 +1,11 @@
-bad task
+list
+mark 1
 todo buy bread
-deadline submit homework /by Wednesday
-event hackathon /from 18 Jul /to 20 Jul
-list
+deadline submit homework /by friday
+event conference /from 18 aug /to 20 aug
+mark 1
 mark 2
-mark 3
+unmark 1
+delete 3
 list
-unmark 3
-list
-mark 4
 bye
