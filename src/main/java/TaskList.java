@@ -44,16 +44,16 @@ public class TaskList {
 
         Task task;
         if (toDoMatcher.find()) {
-            String taskDescription = toDoMatcher.group(1);
+            String taskDescription = toDoMatcher.group(Constants.RegexGroup.TASK_NAME.getGroup());
             task = new ToDo(taskDescription);
         } else if (deadlineMatcher.find()) {
-            String taskDescription = deadlineMatcher.group(1);
-            String deadline = deadlineMatcher.group(2);
+            String taskDescription = deadlineMatcher.group(Constants.RegexGroup.TASK_NAME.getGroup());
+            String deadline = deadlineMatcher.group(Constants.RegexGroup.DEADLINE.getGroup());
             task = new Deadline(taskDescription, deadline);
         } else if (eventMatcher.find()) {
-            String taskDescription = eventMatcher.group(1);
-            String start = eventMatcher.group(2);
-            String end = eventMatcher.group(3);
+            String taskDescription = eventMatcher.group(Constants.RegexGroup.TASK_NAME.getGroup());
+            String start = eventMatcher.group(Constants.RegexGroup.START_DATE.getGroup());
+            String end = eventMatcher.group(Constants.RegexGroup.END_DATE.getGroup());
             task = new Event(taskDescription, start, end);
         } else {
             throw new InvalidTaskException(Constants.UNKNOWN_INPUT);

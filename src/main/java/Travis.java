@@ -86,11 +86,11 @@ public class Travis {
             Matcher deleteTaskMatcher = deleteTaskPattern.matcher(input);
 
             if (markAsDoneMatcher.matches()) {
-                travis.markTaskAsDone(markAsDoneMatcher.group(1));
+                travis.markTaskAsDone(markAsDoneMatcher.group(Constants.RegexGroup.TASK_INDEX.getGroup()));
             } else if (markAsNotDoneMatcher.matches()) {
-                travis.markTaskAsNotDone(markAsNotDoneMatcher.group(1));
+                travis.markTaskAsNotDone(markAsNotDoneMatcher.group(Constants.RegexGroup.TASK_INDEX.getGroup()));
             } else if (deleteTaskMatcher.matches()) {
-                travis.deleteTask(deleteTaskMatcher.group(1));
+                travis.deleteTask(deleteTaskMatcher.group(Constants.RegexGroup.TASK_INDEX.getGroup()));
             } else if (input.equals("list")) {
                 travis.listTasks();
             } else {
