@@ -1,22 +1,68 @@
+import constants.Enums;
+import constants.RegexConstants;
+import constants.TaskListConstants;
 import exceptions.InvalidTaskException;
+import exceptions.LoadInvalidTaskException;
 import exceptions.TaskNotFoundException;
-import tasks.Deadline;
-import tasks.Event;
-import tasks.Task;
-import tasks.ToDo;
+import loaders.DeadlineLoader;
+import loaders.EventLoader;
+import loaders.ToDoLoader;
+import tasks.*;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.Path;
+
 public class TaskList {
-    private static final Pattern toDoPattern = Pattern.compile(Constants.TO_DO_REGEX);
-    private static final Pattern deadlinePattern = Pattern.compile(Constants.DEADLINE_REGEX);
-    private static final Pattern eventPattern = Pattern.compile(Constants.EVENT_REGEX);
+    private static final Pattern toDoPattern = Pattern.compile(RegexConstants.TO_DO_REGEX);
+    private static final Pattern deadlinePattern = Pattern.compile(RegexConstants.DEADLINE_REGEX);
+    private static final Pattern eventPattern = Pattern.compile(RegexConstants.EVENT_REGEX);
     private final ArrayList<Task> tasks;
 
     public TaskList() {
         this.tasks = new ArrayList<>();
+    }
+
+    public void readTasks() throws IOException {
+        Path filePath = Paths.get(TaskListConstants.FILE_PATH);
+        BufferedReader reader = Files.newBufferedReader(filePath);
+
+        String line;
+        while ((line = reader.readLine()) != null) {
+            try {
+                Task task = switch (line.charAt(Enums.FileInputArg.TASK_TYPE.ordinal())) {
+                    case 'T' -> {
+                        ToDoLoader toDoLoader = new ToDoLoader();
+                        yield toDoLoader.load(line);
+                    }
+                    case 'D' -> {
+                        DeadlineLoader deadlineLoader = new DeadlineLoader();
+                        yield deadlineLoader.load(line);
+                    }
+                    default -> {
+                        EventLoader eventLoader = new EventLoader();
+                        yield eventLoader.load(line);
+                    }
+                };
+                this.tasks.add(task);
+            } catch (LoadInvalidTaskException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+    public void saveTasks() throws IOException {
+        Path filePath = Paths.get(TaskListConstants.FILE_PATH);
+        Files.write(
+                filePath, this.toFile(),
+                StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE);
     }
 
     public int getTaskCount() {
@@ -28,12 +74,12 @@ public class TaskList {
             return this.tasks.get(taskNumber);
         } else if (this.tasks.isEmpty()) {
             throw new TaskNotFoundException(
-                    Constants.COULD_NOT_FIND_TASK + (taskNumber + 1) + "\n" +
-                            Constants.TRY_ADDING_TASKS);
+                    TaskListConstants.COULD_NOT_FIND_TASK + (taskNumber + 1) + "\n" +
+                            TaskListConstants.TRY_ADDING_TASKS);
         } else {
             throw new TaskNotFoundException(
-                    Constants.COULD_NOT_FIND_TASK + (taskNumber + 1) + " \n" +
-                            Constants.SELECT_TASK_WITHIN_RANGE + "1 to " + this.tasks.size() + ".");
+                    TaskListConstants.COULD_NOT_FIND_TASK + (taskNumber + 1) + " \n" +
+                            TaskListConstants.SELECT_TASK_WITHIN_RANGE + "1 to " + this.tasks.size() + ".");
         }
     }
 
@@ -44,19 +90,19 @@ public class TaskList {
 
         Task task;
         if (toDoMatcher.find()) {
-            String taskDescription = toDoMatcher.group(Constants.RegexGroup.TASK_NAME.getGroup());
+            String taskDescription = toDoMatcher.group(Enums.RegexGroup.TASK_NAME.getGroup());
             task = new ToDo(taskDescription);
         } else if (deadlineMatcher.find()) {
-            String taskDescription = deadlineMatcher.group(Constants.RegexGroup.TASK_NAME.getGroup());
-            String deadline = deadlineMatcher.group(Constants.RegexGroup.DEADLINE.getGroup());
+            String taskDescription = deadlineMatcher.group(Enums.RegexGroup.TASK_NAME.getGroup());
+            String deadline = deadlineMatcher.group(Enums.RegexGroup.DEADLINE.getGroup());
             task = new Deadline(taskDescription, deadline);
         } else if (eventMatcher.find()) {
-            String taskDescription = eventMatcher.group(Constants.RegexGroup.TASK_NAME.getGroup());
-            String start = eventMatcher.group(Constants.RegexGroup.START_DATE.getGroup());
-            String end = eventMatcher.group(Constants.RegexGroup.END_DATE.getGroup());
+            String taskDescription = eventMatcher.group(Enums.RegexGroup.TASK_NAME.getGroup());
+            String start = eventMatcher.group(Enums.RegexGroup.START_DATE.getGroup());
+            String end = eventMatcher.group(Enums.RegexGroup.END_DATE.getGroup());
             task = new Event(taskDescription, start, end);
         } else {
-            throw new InvalidTaskException(Constants.UNKNOWN_INPUT);
+            throw new InvalidTaskException(TaskListConstants.UNKNOWN_INPUT);
         }
 
         this.tasks.add(task);
@@ -81,10 +127,21 @@ public class TaskList {
         return task;
     }
 
+    public byte[] toFile() {
+        if (this.tasks.isEmpty()) {
+            return new byte[0];
+        }
+        StringBuilder output = new StringBuilder();
+        for (Task task : this.tasks) {
+            output.append(task.getFileString());
+        }
+        return output.toString().getBytes();
+    }
+
     @Override
     public String toString() {
         if (this.tasks.isEmpty()) {
-            return Constants.NO_TASKS + " " + Constants.TRY_ADDING_TASKS;
+            return TaskListConstants.NO_TASKS + " " + TaskListConstants.TRY_ADDING_TASKS;
         }
         StringBuilder output = new StringBuilder();
         for (int i = 0; i < this.tasks.size(); i++) {
