@@ -8,6 +8,11 @@ public class Deadline extends Task {
         this.deadline = deadline;
     }
 
+    public String getFileString() {
+        return String.join(
+                " | ", "D", this.getStatusIcon(), this.description, this.deadline) + "\n";
+    }
+
     @Override
     public String toString() {
         return "[D]" + super.toString() + " (by: " + this.deadline + ")";
