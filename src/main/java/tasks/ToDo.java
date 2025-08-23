@@ -5,6 +5,10 @@ public class ToDo extends Task {
         super(description);
     }
 
+    public String getFileString() {
+        return String.join(" | ", "T", this.getStatusIcon(), this.description) + "\n";
+    }
+
     @Override
     public String toString() {
         return "[T]" + super.toString();
