@@ -1,6 +1,7 @@
 package constants;
 
 public final class TaskListConstants {
+    public static final String FILE_PATH = "tasks.txt";
     public static final String NO_TASKS = "You have no tasks right now.";
     public static final String COULD_NOT_FIND_TASK = "Could not find task with task number: ";
     public static final String TRY_ADDING_TASKS = "Try adding some tasks!";
