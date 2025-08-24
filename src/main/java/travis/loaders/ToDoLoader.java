@@ -1,8 +1,8 @@
-package loaders;
+package travis.loaders;
 
-import constants.Enums;
-import exceptions.LoadInvalidTaskException;
-import tasks.ToDo;
+import travis.constants.Enums;
+import travis.exceptions.LoadInvalidTaskException;
+import travis.tasks.ToDo;
 
 public class ToDoLoader implements Loader {
     @Override

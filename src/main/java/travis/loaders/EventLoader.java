@@ -1,8 +1,8 @@
-package loaders;
+package travis.loaders;
 
-import constants.Enums;
-import exceptions.LoadInvalidTaskException;
-import tasks.Event;
+import travis.constants.Enums;
+import travis.exceptions.LoadInvalidTaskException;
+import travis.tasks.Event;
 
 public class EventLoader implements Loader {
     @Override

@@ -1,9 +1,12 @@
-import constants.Enums;
-import constants.RegexConstants;
-import constants.TravisConstants;
-import exceptions.InvalidTaskException;
-import exceptions.TaskNotFoundException;
-import tasks.Task;
+package travis.chatbot;
+
+import travis.TaskList;
+import travis.constants.Enums;
+import travis.constants.RegexConstants;
+import travis.constants.TravisConstants;
+import travis.exceptions.InvalidTaskException;
+import travis.exceptions.TaskNotFoundException;
+import travis.tasks.Task;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -21,7 +24,7 @@ public class Travis {
         try {
             this.tasks.readTasks();
         } catch (IOException e) {
-            System.out.println("Error reading tasks file");
+            System.out.println("Error reading tasks.txt file");
         }
     }
 

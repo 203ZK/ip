@@ -1,4 +1,4 @@
-package constants;
+package travis.constants;
 
 public final class Enums {
     public enum RegexGroup {

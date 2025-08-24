@@ -1,15 +1,15 @@
 ____________________________________________________________
-Hello! I'm Travis!
+Hello! I'm travis.chatbot.Travis!
 What can I do for you?
 ____________________________________________________________
 
 ____________________________________________________________
-You have no tasks right now. Try adding some tasks!
+You have no travis.tasks right now. Try adding some travis.tasks!
 ____________________________________________________________
 
 ____________________________________________________________
 Could not find task with task number: 1
-Try adding some tasks!
+Try adding some travis.tasks!
 ____________________________________________________________
 
 ____________________________________________________________

@@ -1,4 +1,4 @@
-package exceptions;
+package travis.exceptions;
 
 public class InvalidTaskException extends RuntimeException {
     public InvalidTaskException(String message) {

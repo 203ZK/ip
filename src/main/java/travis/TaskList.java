@@ -1,13 +1,15 @@
-import constants.Enums;
-import constants.RegexConstants;
-import constants.TaskListConstants;
-import exceptions.InvalidTaskException;
-import exceptions.LoadInvalidTaskException;
-import exceptions.TaskNotFoundException;
-import loaders.DeadlineLoader;
-import loaders.EventLoader;
-import loaders.ToDoLoader;
-import tasks.*;
+package travis;
+
+import travis.constants.Enums;
+import travis.constants.RegexConstants;
+import travis.constants.TaskListConstants;
+import travis.exceptions.InvalidTaskException;
+import travis.exceptions.LoadInvalidTaskException;
+import travis.exceptions.TaskNotFoundException;
+import travis.loaders.DeadlineLoader;
+import travis.loaders.EventLoader;
+import travis.loaders.ToDoLoader;
+import travis.tasks.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;

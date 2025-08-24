@@ -1,4 +1,4 @@
-package constants;
+package travis.constants;
 
 public final class TravisConstants {
     public static final String GREETING = "Hello! I'm Travis!\nWhat can I do for you?";

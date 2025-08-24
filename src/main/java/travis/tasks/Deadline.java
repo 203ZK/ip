@@ -1,6 +1,6 @@
-package tasks;
+package travis.tasks;
 
-import constants.LoaderConstants;
+import travis.constants.LoaderConstants;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
