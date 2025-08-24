@@ -19,21 +19,16 @@ public class Travis {
     private static final Pattern deleteTaskPattern = Pattern.compile(RegexConstants.DELETE_TASK_REGEX);
     private final TaskList tasks;
 
+    private Ui ui;
+
     public Travis() {
+        this.ui = new Ui();
         this.tasks = new TaskList();
         try {
             this.tasks.readTasks();
         } catch (IOException e) {
             System.out.println("Error reading tasks.txt file");
         }
-    }
-
-    private static void greet() {
-        wrap(TravisConstants.GREETING);
-    }
-
-    private static void farewell() {
-        wrap(TravisConstants.FAREWELL);
     }
 
     private static void wrap(String content) {
@@ -102,9 +97,8 @@ public class Travis {
         }
     }
 
-    public static void main(String[] args) {
-        Travis travis = new Travis();
-        greet();
+    private void run() {
+        this.ui.greet();
 
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine().trim();
@@ -115,16 +109,16 @@ public class Travis {
             Matcher deleteTaskMatcher = deleteTaskPattern.matcher(input);
 
             if (markAsDoneMatcher.matches()) {
-                travis.markTaskAsDone(markAsDoneMatcher.group(Enums.RegexGroup.TASK_INDEX.getGroup()));
+                this.markTaskAsDone(markAsDoneMatcher.group(Enums.RegexGroup.TASK_INDEX.getGroup()));
             } else if (markAsNotDoneMatcher.matches()) {
-                travis.markTaskAsNotDone(markAsNotDoneMatcher.group(Enums.RegexGroup.TASK_INDEX.getGroup()));
+                this.markTaskAsNotDone(markAsNotDoneMatcher.group(Enums.RegexGroup.TASK_INDEX.getGroup()));
             } else if (deleteTaskMatcher.matches()) {
-                travis.deleteTask(deleteTaskMatcher.group(Enums.RegexGroup.TASK_INDEX.getGroup()));
+                this.deleteTask(deleteTaskMatcher.group(Enums.RegexGroup.TASK_INDEX.getGroup()));
             } else if (input.equals("list")) {
-                travis.listTasks();
+                this.listTasks();
             } else {
                 try {
-                    travis.addTask(input);
+                    this.addTask(input);
                 } catch (InvalidTaskException e) {
                     wrap(e.getMessage());
                 }
@@ -133,7 +127,12 @@ public class Travis {
             input = scanner.nextLine().trim();
         }
 
-        farewell();
         scanner.close();
+        this.ui.farewell();
+    }
+
+    public static void main(String[] args) {
+        Travis travis = new Travis();
+        travis.run();
     }
 }
