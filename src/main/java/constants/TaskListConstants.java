@@ -11,4 +11,5 @@ public final class TaskListConstants {
             Were you trying to add a task?
             Begin your input with one of the following words to add a task: \
             "todo", "deadline", "event".""";
+    public static final String UNKNOWN_DEADLINE = "Sorry, it looks like %s isn't a valid date!";
 }
