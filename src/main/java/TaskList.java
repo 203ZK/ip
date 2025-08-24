@@ -12,6 +12,9 @@ import tasks.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.StandardOpenOption;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -92,15 +95,23 @@ public class TaskList {
         if (toDoMatcher.find()) {
             String taskDescription = toDoMatcher.group(Enums.RegexGroup.TASK_NAME.getGroup());
             task = new ToDo(taskDescription);
+
         } else if (deadlineMatcher.find()) {
             String taskDescription = deadlineMatcher.group(Enums.RegexGroup.TASK_NAME.getGroup());
             String deadline = deadlineMatcher.group(Enums.RegexGroup.DEADLINE.getGroup());
-            task = new Deadline(taskDescription, deadline);
+            try {
+                LocalDate date = LocalDate.parse(deadline, DateTimeFormatter.ISO_LOCAL_DATE);
+                task = new Deadline(taskDescription, date);
+            } catch (DateTimeParseException e) {
+                throw new InvalidTaskException(String.format(TaskListConstants.UNKNOWN_DEADLINE, deadline));
+            }
+
         } else if (eventMatcher.find()) {
             String taskDescription = eventMatcher.group(Enums.RegexGroup.TASK_NAME.getGroup());
             String start = eventMatcher.group(Enums.RegexGroup.START_DATE.getGroup());
             String end = eventMatcher.group(Enums.RegexGroup.END_DATE.getGroup());
             task = new Event(taskDescription, start, end);
+
         } else {
             throw new InvalidTaskException(TaskListConstants.UNKNOWN_INPUT);
         }
