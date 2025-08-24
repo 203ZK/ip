@@ -17,4 +17,12 @@ public class Ui {
     public void farewell() {
         wrap(TravisConstants.FAREWELL);
     }
+
+    public void warnFileNotFound() {
+        System.out.println("Error: Could not find tasks.txt file.");
+    }
+
+    public void warnLoadInvalidTask() {
+        System.out.println("Error: Invalid task format found in tasks.txt.");
+    }
 }

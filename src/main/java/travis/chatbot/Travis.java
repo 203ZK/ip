@@ -3,12 +3,15 @@ package travis.chatbot;
 import travis.TaskList;
 import travis.constants.Enums;
 import travis.constants.RegexConstants;
+import travis.constants.TaskListConstants;
 import travis.constants.TravisConstants;
 import travis.exceptions.InvalidTaskException;
 import travis.exceptions.TaskNotFoundException;
+import travis.storage.Storage;
 import travis.tasks.Task;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -17,17 +20,23 @@ public class Travis {
     private static final Pattern markAsDonePattern = Pattern.compile(RegexConstants.MARK_AS_DONE_REGEX);
     private static final Pattern markAsNotDonePattern = Pattern.compile(RegexConstants.MARK_AS_NOT_DONE_REGEX);
     private static final Pattern deleteTaskPattern = Pattern.compile(RegexConstants.DELETE_TASK_REGEX);
-    private final TaskList tasks;
 
-    private Ui ui;
+
+    private final Ui ui;
+    private final Storage storage;
+    private final TaskList tasks;
 
     public Travis() {
         this.ui = new Ui();
+        this.storage = new Storage(TaskListConstants.FILE_PATH);
         this.tasks = new TaskList();
+
         try {
-            this.tasks.readTasks();
+            this.tasks.setTaskList(this.storage.loadTasks());
         } catch (IOException e) {
-            System.out.println("Error reading tasks.txt file");
+            this.ui.warnFileNotFound();
+        } catch (InvalidTaskException e) {
+            this.ui.warnLoadInvalidTask();
         }
     }
 
@@ -40,12 +49,8 @@ public class Travis {
         wrap(this.tasks.toString());
     }
 
-    private void updateTaskFile() {
-        try {
-            this.tasks.saveTasks();
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
+    public void updateTaskFile() {
+        // TO BE REMOVED
     }
 
     private void addTask(String input) {
