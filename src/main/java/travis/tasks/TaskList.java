@@ -1,29 +1,17 @@
-package travis;
+package travis.tasks;
 
 import travis.constants.Enums;
 import travis.constants.RegexConstants;
 import travis.constants.TaskListConstants;
 import travis.exceptions.InvalidTaskException;
-import travis.exceptions.LoadInvalidTaskException;
 import travis.exceptions.TaskNotFoundException;
-import travis.loaders.DeadlineLoader;
-import travis.loaders.EventLoader;
-import travis.loaders.ToDoLoader;
-import travis.tasks.*;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.nio.file.StandardOpenOption;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.Path;
 
 public class TaskList {
     private static final Pattern toDoPattern = Pattern.compile(RegexConstants.TO_DO_REGEX);
@@ -33,6 +21,10 @@ public class TaskList {
 
     public TaskList() {
         this.tasks = new ArrayList<>();
+    }
+
+    public ArrayList<Task> getTaskList() {
+        return this.tasks;
     }
 
     public void setTaskList(ArrayList<Task> tasks) {

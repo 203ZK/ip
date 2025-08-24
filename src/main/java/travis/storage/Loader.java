@@ -1,4 +1,4 @@
-package travis.loaders;
+package travis.storage;
 
 import travis.exceptions.LoadInvalidTaskException;
 import travis.tasks.Task;

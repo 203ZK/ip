@@ -1,4 +1,4 @@
-package travis.loaders;
+package travis.storage;
 
 import travis.constants.Enums;
 import travis.constants.LoaderConstants;
