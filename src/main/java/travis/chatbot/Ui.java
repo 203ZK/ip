@@ -18,6 +18,12 @@ public class Ui {
         wrap(TravisConstants.FAREWELL);
     }
 
+    // ------------------- WARNINGS -------------------
+
+    public void warnMessage(String message) {
+        wrap(message);
+    }
+
     public void warnFileNotFound() {
         wrap("Error: Could not find tasks.txt file.");
     }
@@ -26,9 +32,7 @@ public class Ui {
         wrap("Error: Invalid task format found in tasks.txt.");
     }
 
-    public void warnInvalidTask(String message) {
-        wrap(message);
-    }
+    // ------------------- RESPONSES -------------------
 
     public void listTasks(String taskListStr) {
         wrap(taskListStr);
@@ -37,5 +41,18 @@ public class Ui {
     public void notifyAddTask(String taskName, int numOfTasks) {
         wrap(String.format(TravisConstants.NEW_TASK, taskName) +
                 String.format(TravisConstants.TOTAL_TASKS, numOfTasks));
+    }
+
+    public void notifyDeleteTask(String taskName, int numOfTasks) {
+        wrap(String.format(TravisConstants.DELETED_TASK, taskName) +
+                String.format(TravisConstants.TOTAL_TASKS, numOfTasks));
+    }
+
+    public void notifyMarkTaskAsDone(String taskName) {
+        wrap(String.format(TravisConstants.MARKED_AS_DONE, taskName));
+    }
+
+    public void notifyMarkTaskAsNotDone(String taskName) {
+        wrap(String.format(TravisConstants.MARKED_AS_NOT_DONE, taskName));
     }
 }

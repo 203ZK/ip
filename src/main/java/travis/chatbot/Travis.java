@@ -53,7 +53,7 @@ public class Travis {
             Task newTask = this.taskList.addTask(input);
             this.ui.notifyAddTask(newTask.toString(), this.taskList.getTaskCount());
         } catch (InvalidTaskException e) {
-            this.ui.warnInvalidTask(e.getMessage());
+            this.ui.warnMessage(e.getMessage());
         } finally {
             this.storage.updateTaskFile(this.taskList.getTaskList());
         }
@@ -63,10 +63,9 @@ public class Travis {
         try {
             int taskNumber = Integer.parseInt(taskNumberStr);
             Task deletedTask = this.taskList.deleteTask(taskNumber);
-            wrap(String.format(TravisConstants.DELETED_TASK, deletedTask) +
-                    String.format(TravisConstants.TOTAL_TASKS, this.taskList.getTaskCount()));
+            this.ui.notifyDeleteTask(deletedTask.toString(), this.taskList.getTaskCount());
         } catch (TaskNotFoundException e) {
-            wrap(e.getMessage());
+            this.ui.warnMessage(e.getMessage());
         } finally {
             this.storage.updateTaskFile(this.taskList.getTaskList());
         }
@@ -76,9 +75,9 @@ public class Travis {
         try {
             int taskNumber = Integer.parseInt(taskNumberStr);
             Task completedTask = this.taskList.markTaskAsDone(taskNumber);
-            wrap(String.format(TravisConstants.MARKED_AS_DONE, completedTask));
+            this.ui.notifyMarkTaskAsDone(completedTask.toString());
         } catch (TaskNotFoundException e) {
-            wrap(e.getMessage());
+            this.ui.warnMessage(e.getMessage());
         } finally {
             this.storage.updateTaskFile(this.taskList.getTaskList());
         }
@@ -88,9 +87,9 @@ public class Travis {
         try {
             int taskNumber = Integer.parseInt(taskNumberStr);
             Task incompleteTask = this.taskList.markTaskAsNotDone(taskNumber);
-            wrap(String.format(TravisConstants.MARKED_AS_NOT_DONE, incompleteTask));
+            this.ui.notifyMarkTaskAsNotDone(incompleteTask.toString());
         } catch (TaskNotFoundException e) {
-            wrap(e.getMessage());
+            this.ui.warnMessage(e.getMessage());
         } finally {
             this.storage.updateTaskFile(this.taskList.getTaskList());
         }
@@ -119,7 +118,7 @@ public class Travis {
                 try {
                     this.addTask(input);
                 } catch (InvalidTaskException e) {
-                    wrap(e.getMessage());
+                    this.ui.warnMessage(e.getMessage());
                 }
             }
 
