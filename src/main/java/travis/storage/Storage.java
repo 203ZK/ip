@@ -3,9 +3,6 @@ package travis.storage;
 import travis.constants.Enums;
 import travis.constants.TaskListConstants;
 import travis.exceptions.LoadInvalidTaskException;
-import travis.loaders.DeadlineLoader;
-import travis.loaders.EventLoader;
-import travis.loaders.ToDoLoader;
 import travis.tasks.Task;
 
 import java.io.BufferedReader;

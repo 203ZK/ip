@@ -1,6 +1,6 @@
 package travis.chatbot;
 
-import travis.TaskList;
+import travis.tasks.TaskList;
 import travis.constants.Enums;
 import travis.constants.RegexConstants;
 import travis.constants.TaskListConstants;
@@ -11,7 +11,6 @@ import travis.storage.Storage;
 import travis.tasks.Task;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -24,15 +23,15 @@ public class Travis {
 
     private final Ui ui;
     private final Storage storage;
-    private final TaskList tasks;
+    private final TaskList taskList;
 
     public Travis() {
         this.ui = new Ui();
         this.storage = new Storage(TaskListConstants.FILE_PATH);
-        this.tasks = new TaskList();
+        this.taskList = new TaskList();
 
         try {
-            this.tasks.setTaskList(this.storage.loadTasks());
+            this.taskList.setTaskList(this.storage.loadTasks());
         } catch (IOException e) {
             this.ui.warnFileNotFound();
         } catch (InvalidTaskException e) {
@@ -46,59 +45,54 @@ public class Travis {
     }
 
     private void listTasks() {
-        wrap(this.tasks.toString());
-    }
-
-    public void updateTaskFile() {
-        // TO BE REMOVED
+        this.ui.listTasks(this.taskList.toString());
     }
 
     private void addTask(String input) {
         try {
-            Task newTask = this.tasks.addTask(input);
-            wrap(String.format(TravisConstants.NEW_TASK, newTask) +
-                    String.format(TravisConstants.TOTAL_TASKS, this.tasks.getTaskCount()));
+            Task newTask = this.taskList.addTask(input);
+            this.ui.notifyAddTask(newTask.toString(), this.taskList.getTaskCount());
         } catch (InvalidTaskException e) {
-            wrap(e.getMessage());
+            this.ui.warnInvalidTask(e.getMessage());
         } finally {
-            this.updateTaskFile();
+            this.storage.updateTaskFile(this.taskList.getTaskList());
         }
     }
 
     private void deleteTask(String taskNumberStr) {
         try {
             int taskNumber = Integer.parseInt(taskNumberStr);
-            Task deletedTask = this.tasks.deleteTask(taskNumber);
+            Task deletedTask = this.taskList.deleteTask(taskNumber);
             wrap(String.format(TravisConstants.DELETED_TASK, deletedTask) +
-                    String.format(TravisConstants.TOTAL_TASKS, this.tasks.getTaskCount()));
+                    String.format(TravisConstants.TOTAL_TASKS, this.taskList.getTaskCount()));
         } catch (TaskNotFoundException e) {
             wrap(e.getMessage());
         } finally {
-            this.updateTaskFile();
+            this.storage.updateTaskFile(this.taskList.getTaskList());
         }
     }
 
     private void markTaskAsDone(String taskNumberStr) {
         try {
             int taskNumber = Integer.parseInt(taskNumberStr);
-            Task completedTask = this.tasks.markTaskAsDone(taskNumber);
+            Task completedTask = this.taskList.markTaskAsDone(taskNumber);
             wrap(String.format(TravisConstants.MARKED_AS_DONE, completedTask));
         } catch (TaskNotFoundException e) {
             wrap(e.getMessage());
         } finally {
-            this.updateTaskFile();
+            this.storage.updateTaskFile(this.taskList.getTaskList());
         }
     }
 
     private void markTaskAsNotDone(String taskNumberStr) {
         try {
             int taskNumber = Integer.parseInt(taskNumberStr);
-            Task incompleteTask = this.tasks.markTaskAsNotDone(taskNumber);
+            Task incompleteTask = this.taskList.markTaskAsNotDone(taskNumber);
             wrap(String.format(TravisConstants.MARKED_AS_NOT_DONE, incompleteTask));
         } catch (TaskNotFoundException e) {
             wrap(e.getMessage());
         } finally {
-            this.updateTaskFile();
+            this.storage.updateTaskFile(this.taskList.getTaskList());
         }
     }
 

@@ -19,10 +19,23 @@ public class Ui {
     }
 
     public void warnFileNotFound() {
-        System.out.println("Error: Could not find tasks.txt file.");
+        wrap("Error: Could not find tasks.txt file.");
     }
 
     public void warnLoadInvalidTask() {
-        System.out.println("Error: Invalid task format found in tasks.txt.");
+        wrap("Error: Invalid task format found in tasks.txt.");
+    }
+
+    public void warnInvalidTask(String message) {
+        wrap(message);
+    }
+
+    public void listTasks(String taskListStr) {
+        wrap(taskListStr);
+    }
+
+    public void notifyAddTask(String taskName, int numOfTasks) {
+        wrap(String.format(TravisConstants.NEW_TASK, taskName) +
+                String.format(TravisConstants.TOTAL_TASKS, numOfTasks));
     }
 }
