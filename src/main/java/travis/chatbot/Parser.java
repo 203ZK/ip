@@ -1,9 +1,7 @@
-package travis;
+package travis.chatbot;
 
-import travis.chatbot.Travis;
 import travis.constants.Enums;
 import travis.constants.RegexConstants;
-import travis.exceptions.InvalidTaskException;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
