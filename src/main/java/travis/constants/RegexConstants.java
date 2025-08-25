@@ -1,4 +1,4 @@
-package constants;
+package travis.constants;
 
 public final class RegexConstants {
     public static final String TO_DO_REGEX = "^todo (.*)$";

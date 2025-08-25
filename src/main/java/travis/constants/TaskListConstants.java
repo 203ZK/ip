@@ -1,4 +1,4 @@
-package constants;
+package travis.constants;
 
 public final class TaskListConstants {
     public static final String FILE_PATH = "tasks.txt";

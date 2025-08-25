@@ -1,17 +1,11 @@
-import constants.Enums;
-import constants.RegexConstants;
-import constants.TaskListConstants;
-import exceptions.InvalidTaskException;
-import exceptions.LoadInvalidTaskException;
-import exceptions.TaskNotFoundException;
-import loaders.DeadlineLoader;
-import loaders.EventLoader;
-import loaders.ToDoLoader;
-import tasks.*;
+package travis.tasks;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.nio.file.StandardOpenOption;
+import travis.constants.Enums;
+import travis.constants.RegexConstants;
+import travis.constants.TaskListConstants;
+import travis.exceptions.InvalidTaskException;
+import travis.exceptions.TaskNotFoundException;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -19,53 +13,22 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.Path;
-
 public class TaskList {
     private static final Pattern toDoPattern = Pattern.compile(RegexConstants.TO_DO_REGEX);
     private static final Pattern deadlinePattern = Pattern.compile(RegexConstants.DEADLINE_REGEX);
     private static final Pattern eventPattern = Pattern.compile(RegexConstants.EVENT_REGEX);
-    private final ArrayList<Task> tasks;
+    private ArrayList<Task> tasks;
 
     public TaskList() {
         this.tasks = new ArrayList<>();
     }
 
-    public void readTasks() throws IOException {
-        Path filePath = Paths.get(TaskListConstants.FILE_PATH);
-        BufferedReader reader = Files.newBufferedReader(filePath);
-
-        String line;
-        while ((line = reader.readLine()) != null) {
-            try {
-                Task task = switch (line.charAt(Enums.FileInputArg.TASK_TYPE.ordinal())) {
-                    case 'T' -> {
-                        ToDoLoader toDoLoader = new ToDoLoader();
-                        yield toDoLoader.load(line);
-                    }
-                    case 'D' -> {
-                        DeadlineLoader deadlineLoader = new DeadlineLoader();
-                        yield deadlineLoader.load(line);
-                    }
-                    default -> {
-                        EventLoader eventLoader = new EventLoader();
-                        yield eventLoader.load(line);
-                    }
-                };
-                this.tasks.add(task);
-            } catch (LoadInvalidTaskException e) {
-                System.out.println(e.getMessage());
-            }
-        }
+    public ArrayList<Task> getTaskList() {
+        return this.tasks;
     }
 
-    public void saveTasks() throws IOException {
-        Path filePath = Paths.get(TaskListConstants.FILE_PATH);
-        Files.write(
-                filePath, this.toFile(),
-                StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE);
+    public void setTaskList(ArrayList<Task> tasks) {
+        this.tasks = tasks;
     }
 
     public int getTaskCount() {
@@ -136,17 +99,6 @@ public class TaskList {
         Task task = this.getTask(taskNumber - 1);
         task.markAsNotDone();
         return task;
-    }
-
-    public byte[] toFile() {
-        if (this.tasks.isEmpty()) {
-            return new byte[0];
-        }
-        StringBuilder output = new StringBuilder();
-        for (Task task : this.tasks) {
-            output.append(task.getFileString());
-        }
-        return output.toString().getBytes();
     }
 
     @Override

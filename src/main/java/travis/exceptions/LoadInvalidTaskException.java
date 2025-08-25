@@ -1,4 +1,4 @@
-package exceptions;
+package travis.exceptions;
 
 public class LoadInvalidTaskException extends RuntimeException {
     public LoadInvalidTaskException(String taskInput) {

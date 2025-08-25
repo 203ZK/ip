@@ -1,4 +1,4 @@
-package tasks;
+package travis.tasks;
 
 abstract public class Task {
     protected String description;
