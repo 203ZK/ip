@@ -37,6 +37,10 @@ public class Travis {
         }
     }
 
+    public boolean isRunning() {
+        return !this.isExiting;
+    }
+
     public void listTasks() {
         this.ui.listTasks(this.taskList.toString());
     }
@@ -93,18 +97,7 @@ public class Travis {
     }
 
     private void run() {
-        this.ui.greet();
-
-        Scanner scanner = new Scanner(System.in);
-        String input = scanner.nextLine().trim();
-
-        while (!this.isExiting) {
-            Parser.parse(this, input);
-            input = scanner.nextLine().trim();
-        }
-
-        scanner.close();
-        this.ui.farewell();
+        this.ui.runUi(this);
     }
 
     public static void main(String[] args) {

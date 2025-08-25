@@ -1,8 +1,13 @@
 package travis.chatbot;
 
+import travis.Parser;
 import travis.constants.TravisConstants;
 
+import java.util.Scanner;
+
 public class Ui {
+    private final Scanner scanner = new Scanner(System.in);
+
     public Ui() {}
 
     private static void wrap(String content) {
@@ -16,6 +21,17 @@ public class Ui {
 
     public void farewell() {
         wrap(TravisConstants.FAREWELL);
+    }
+
+    public void runUi(Travis travis) {
+        this.greet();
+        String input = this.scanner.nextLine().trim();
+        while (travis.isRunning()) {
+            Parser.parse(travis, input);
+            input = scanner.nextLine().trim();
+        }
+        this.scanner.close();
+        this.farewell();
     }
 
     // ------------------- WARNINGS -------------------
