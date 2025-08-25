@@ -1,13 +1,11 @@
 package travis.tasks;
 
-import travis.constants.LoaderConstants;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class Deadline extends Task {
     private LocalDate deadline;
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(LoaderConstants.DEADLINE_FORMAT);
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd yyyy");
 
     public Deadline(String description, LocalDate deadline) {
         super(description);

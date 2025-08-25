@@ -1,20 +1,13 @@
 package travis.chatbot;
 
-import travis.Parser;
 import travis.tasks.TaskList;
-import travis.constants.Enums;
-import travis.constants.RegexConstants;
 import travis.constants.TaskListConstants;
-import travis.constants.TravisConstants;
 import travis.exceptions.InvalidTaskException;
 import travis.exceptions.TaskNotFoundException;
 import travis.storage.Storage;
 import travis.tasks.Task;
 
 import java.io.IOException;
-import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Travis {
     private final Ui ui;

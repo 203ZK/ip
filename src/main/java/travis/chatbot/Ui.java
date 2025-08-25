@@ -1,7 +1,6 @@
 package travis.chatbot;
 
-import travis.Parser;
-import travis.constants.TravisConstants;
+import travis.constants.UiConstants;
 
 import java.util.Scanner;
 
@@ -12,15 +11,15 @@ public class Ui {
 
     private static void wrap(String content) {
         System.out.println(
-                TravisConstants.HORIZONTAL_LINE + "\n" + content + "\n" + TravisConstants.HORIZONTAL_LINE + "\n");
+                UiConstants.HORIZONTAL_LINE + "\n" + content + "\n" + UiConstants.HORIZONTAL_LINE + "\n");
     }
 
     public void greet() {
-        wrap(TravisConstants.GREETING);
+        wrap(UiConstants.GREETING);
     }
 
     public void farewell() {
-        wrap(TravisConstants.FAREWELL);
+        wrap(UiConstants.FAREWELL);
     }
 
     public void runUi(Travis travis) {
@@ -42,11 +41,11 @@ public class Ui {
     }
 
     public void warnFileNotFound() {
-        wrap("Error: Could not find tasks.txt file.");
+        wrap(UiConstants.FILE_NOT_FOUND_ERROR);
     }
 
     public void warnLoadInvalidTask() {
-        wrap("Error: Invalid task format found in tasks.txt.");
+        wrap(UiConstants.INVALID_TASK_FORMAT_ERROR);
     }
 
     // ------------------- RESPONSES -------------------
@@ -56,20 +55,20 @@ public class Ui {
     }
 
     public void notifyAddTask(String taskName, int numOfTasks) {
-        wrap(String.format(TravisConstants.NEW_TASK, taskName) +
-                String.format(TravisConstants.TOTAL_TASKS, numOfTasks));
+        wrap(String.format(UiConstants.NEW_TASK, taskName) +
+                String.format(UiConstants.TOTAL_TASKS, numOfTasks));
     }
 
     public void notifyDeleteTask(String taskName, int numOfTasks) {
-        wrap(String.format(TravisConstants.DELETED_TASK, taskName) +
-                String.format(TravisConstants.TOTAL_TASKS, numOfTasks));
+        wrap(String.format(UiConstants.DELETED_TASK, taskName) +
+                String.format(UiConstants.TOTAL_TASKS, numOfTasks));
     }
 
     public void notifyMarkTaskAsDone(String taskName) {
-        wrap(String.format(TravisConstants.MARKED_AS_DONE, taskName));
+        wrap(String.format(UiConstants.MARKED_AS_DONE, taskName));
     }
 
     public void notifyMarkTaskAsNotDone(String taskName) {
-        wrap(String.format(TravisConstants.MARKED_AS_NOT_DONE, taskName));
+        wrap(String.format(UiConstants.MARKED_AS_NOT_DONE, taskName));
     }
 }
