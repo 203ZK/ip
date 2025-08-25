@@ -13,7 +13,7 @@ public class Parser {
     private static final Pattern markAsNotDonePattern = Pattern.compile(RegexConstants.MARK_AS_NOT_DONE_REGEX);
     private static final Pattern deleteTaskPattern = Pattern.compile(RegexConstants.DELETE_TASK_REGEX);
 
-    public static void parse(Travis travis, String input) {
+    public static boolean parse(Travis travis, String input) {
         Matcher markAsDoneMatcher = markAsDonePattern.matcher(input);
         Matcher markAsNotDoneMatcher = markAsNotDonePattern.matcher(input);
         Matcher deleteTaskMatcher = deleteTaskPattern.matcher(input);
@@ -28,8 +28,10 @@ public class Parser {
             travis.listTasks();
         } else if (input.equals("bye")) {
             travis.setIsExiting(true);
+            return false;
         } else {
             travis.addTask(input);
         }
+        return true;
     }
 }

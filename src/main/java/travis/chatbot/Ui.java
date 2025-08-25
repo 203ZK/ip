@@ -27,7 +27,8 @@ public class Ui {
         this.greet();
         String input = this.scanner.nextLine().trim();
         while (travis.isRunning()) {
-            Parser.parse(travis, input);
+            boolean status = Parser.parse(travis, input);
+            if (!status) break;
             input = scanner.nextLine().trim();
         }
         this.scanner.close();
