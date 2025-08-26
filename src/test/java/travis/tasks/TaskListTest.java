@@ -139,4 +139,11 @@ public class TaskListTest {
                 "todo", "deadline", "event".""", e.getMessage());
         }
     }
+
+    @Test
+    public void addTask_validToDo() {
+        TaskList taskList = new TaskList();
+        taskList.addTask("todo buy bread");
+        assertEquals("1. [T][?] buy bread", taskList.toString());
+    }
 }
