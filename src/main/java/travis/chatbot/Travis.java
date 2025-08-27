@@ -19,9 +19,9 @@ public class Travis {
     private final TaskList taskList;
     private boolean isExiting;
 
-    public Travis() {
+    public Travis(String filePath) {
         this.ui = new Ui();
-        this.storage = new Storage(TaskListConstants.FILE_PATH);
+        this.storage = new Storage(filePath);
         this.taskList = new TaskList();
         this.isExiting = false;
 
@@ -52,18 +52,11 @@ public class Travis {
     /**
      * Adds a new task to the task list.
      * Prints an error message if the input has an invalid format.
-     * @param input User's input.
      */
-    public void addTask(String input) {
-        try {
-            Task newTask = Parser.parseTask(this, input);
-            this.taskList.addTask(newTask);
-            this.ui.notifyAddTask(newTask.toString(), this.taskList.getTaskCount());
-        } catch (InvalidTaskException e) {
-            this.ui.warnMessage(e.getMessage());
-        } finally {
-            this.storage.updateTaskFile(this.taskList.getTaskList());
-        }
+    public void addTask(Task newTask) {
+        this.taskList.addTask(newTask);
+        this.ui.notifyAddTask(newTask.toString(), this.taskList.getTaskCount());
+        this.storage.updateTaskFile(this.taskList.getTaskList());
     }
 
     /**
@@ -123,7 +116,7 @@ public class Travis {
     }
 
     public static void main(String[] args) {
-        Travis travis = new Travis();
+        Travis travis = new Travis(TaskListConstants.FILE_PATH);
         travis.run();
     }
 }

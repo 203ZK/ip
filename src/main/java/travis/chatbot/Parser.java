@@ -34,7 +34,7 @@ public class Parser {
      * Parses the user's commands.
      * If an existing command is not found, it treats the input as a new task to be added.
      */
-    public static boolean parse(Travis travis, String input) {
+    public static boolean parse(Travis travis, String input) throws InvalidTaskException {
         Matcher markAsDoneMatcher = markAsDonePattern.matcher(input);
         Matcher markAsNotDoneMatcher = markAsNotDonePattern.matcher(input);
         Matcher deleteTaskMatcher = deleteTaskPattern.matcher(input);
@@ -51,7 +51,12 @@ public class Parser {
             travis.setIsExiting(true);
             return false;
         } else {
-            travis.addTask(input);
+            try {
+                Task task = Parser.parseTask(input);
+                travis.addTask(task);
+            } catch (InvalidTaskException e) {
+                return false;
+            }
         }
         return true;
     }
@@ -60,7 +65,7 @@ public class Parser {
      * Parses the task input.
      * If the task is of an invalid format, an <code>InvalidTaskException</code> is thrown.
      */
-    public static Task parseTask(Travis travis, String input) throws InvalidTaskException {
+    public static Task parseTask(String input) throws InvalidTaskException {
         Matcher toDoMatcher = toDoPattern.matcher(input);
         Matcher deadlineMatcher = deadlinePattern.matcher(input);
         Matcher eventMatcher = eventPattern.matcher(input);
