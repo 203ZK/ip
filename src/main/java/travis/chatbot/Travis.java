@@ -15,9 +15,9 @@ public class Travis {
     private final TaskList taskList;
     private boolean isExiting;
 
-    public Travis() {
+    public Travis(String filePath) {
         this.ui = new Ui();
-        this.storage = new Storage(TaskListConstants.FILE_PATH);
+        this.storage = new Storage(filePath);
         this.taskList = new TaskList();
         this.isExiting = false;
 
@@ -34,19 +34,18 @@ public class Travis {
         return !this.isExiting;
     }
 
+    public void setIsExiting(boolean isExiting) {
+        this.isExiting = isExiting;
+    }
+
     public void listTasks() {
         this.ui.listTasks(this.taskList.toString());
     }
 
-    public void addTask(String input) {
-        try {
-            Task newTask = this.taskList.addTask(input);
-            this.ui.notifyAddTask(newTask.toString(), this.taskList.getTaskCount());
-        } catch (InvalidTaskException e) {
-            this.ui.warnMessage(e.getMessage());
-        } finally {
-            this.storage.updateTaskFile(this.taskList.getTaskList());
-        }
+    public void addTask(Task newTask) {
+        this.taskList.addTask(newTask);
+        this.ui.notifyAddTask(newTask.toString(), this.taskList.getTaskCount());
+        this.storage.updateTaskFile(this.taskList.getTaskList());
     }
 
     public void deleteTask(String taskNumberStr) {
@@ -85,16 +84,12 @@ public class Travis {
         }
     }
 
-    public void setIsExiting(boolean isExiting) {
-        this.isExiting = isExiting;
-    }
-
     private void run() {
         this.ui.runUi(this);
     }
 
     public static void main(String[] args) {
-        Travis travis = new Travis();
+        Travis travis = new Travis(TaskListConstants.FILE_PATH);
         travis.run();
     }
 }
