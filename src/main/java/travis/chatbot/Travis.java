@@ -56,7 +56,8 @@ public class Travis {
      */
     public void addTask(String input) {
         try {
-            Task newTask = this.taskList.addTask(input);
+            Task newTask = Parser.parseTask(this, input);
+            this.taskList.addTask(newTask);
             this.ui.notifyAddTask(newTask.toString(), this.taskList.getTaskCount());
         } catch (InvalidTaskException e) {
             this.ui.warnMessage(e.getMessage());
