@@ -1,22 +1,11 @@
 package travis.tasks;
 
-import travis.constants.Enums;
-import travis.constants.RegexConstants;
 import travis.constants.TaskListConstants;
-import travis.exceptions.InvalidTaskException;
 import travis.exceptions.TaskNotFoundException;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class TaskList {
-    private static final Pattern toDoPattern = Pattern.compile(RegexConstants.TO_DO_REGEX);
-    private static final Pattern deadlinePattern = Pattern.compile(RegexConstants.DEADLINE_REGEX);
-    private static final Pattern eventPattern = Pattern.compile(RegexConstants.EVENT_REGEX);
     private ArrayList<Task> tasks;
 
     public TaskList() {
@@ -49,38 +38,8 @@ public class TaskList {
         }
     }
 
-    public Task addTask(String input) throws InvalidTaskException {
-        Matcher toDoMatcher = toDoPattern.matcher(input);
-        Matcher deadlineMatcher = deadlinePattern.matcher(input);
-        Matcher eventMatcher = eventPattern.matcher(input);
-
-        Task task;
-        if (toDoMatcher.find()) {
-            String taskDescription = toDoMatcher.group(Enums.RegexGroup.TASK_NAME.getGroup());
-            task = new ToDo(taskDescription);
-
-        } else if (deadlineMatcher.find()) {
-            String taskDescription = deadlineMatcher.group(Enums.RegexGroup.TASK_NAME.getGroup());
-            String deadline = deadlineMatcher.group(Enums.RegexGroup.DEADLINE.getGroup());
-            try {
-                LocalDate date = LocalDate.parse(deadline, DateTimeFormatter.ISO_LOCAL_DATE);
-                task = new Deadline(taskDescription, date);
-            } catch (DateTimeParseException e) {
-                throw new InvalidTaskException(String.format(TaskListConstants.UNKNOWN_DEADLINE, deadline));
-            }
-
-        } else if (eventMatcher.find()) {
-            String taskDescription = eventMatcher.group(Enums.RegexGroup.TASK_NAME.getGroup());
-            String start = eventMatcher.group(Enums.RegexGroup.START_DATE.getGroup());
-            String end = eventMatcher.group(Enums.RegexGroup.END_DATE.getGroup());
-            task = new Event(taskDescription, start, end);
-
-        } else {
-            throw new InvalidTaskException(TaskListConstants.UNKNOWN_INPUT);
-        }
-
+    public void addTask(Task task) {
         this.tasks.add(task);
-        return task;
     }
 
     public Task deleteTask(int taskNumber) throws TaskNotFoundException {
