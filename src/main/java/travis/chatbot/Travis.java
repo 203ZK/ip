@@ -108,6 +108,11 @@ public class Travis {
         }
     }
 
+    public void filterTasks(String searchInput) {
+        String filteredTasks = this.taskList.filterByTaskName(searchInput);
+        this.ui.listTasks(filteredTasks);
+    }
+
     /**
      * Runs the Ui of the chatbot.
      */

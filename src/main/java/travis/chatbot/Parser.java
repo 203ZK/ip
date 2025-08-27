@@ -24,6 +24,7 @@ public class Parser {
     private static final Pattern markAsDonePattern = Pattern.compile(RegexConstants.MARK_AS_DONE_REGEX);
     private static final Pattern markAsNotDonePattern = Pattern.compile(RegexConstants.MARK_AS_NOT_DONE_REGEX);
     private static final Pattern deleteTaskPattern = Pattern.compile(RegexConstants.DELETE_TASK_REGEX);
+    private static final Pattern findTaskPattern = Pattern.compile(RegexConstants.FIND_TASK_REGEX);
 
     // Patterns to match task formats
     private static final Pattern toDoPattern = Pattern.compile(RegexConstants.TO_DO_REGEX);
@@ -38,8 +39,11 @@ public class Parser {
         Matcher markAsDoneMatcher = markAsDonePattern.matcher(input);
         Matcher markAsNotDoneMatcher = markAsNotDonePattern.matcher(input);
         Matcher deleteTaskMatcher = deleteTaskPattern.matcher(input);
+        Matcher findTaskMatcher = findTaskPattern.matcher(input);
 
-        if (markAsDoneMatcher.matches()) {
+        if (findTaskMatcher.find()) {
+            travis.filterTasks(findTaskMatcher.group(Enums.RegexGroup.TASK_NAME.getGroup()));
+        } else if (markAsDoneMatcher.matches()) {
             travis.markTaskAsDone(markAsDoneMatcher.group(Enums.RegexGroup.TASK_INDEX.getGroup()));
         } else if (markAsNotDoneMatcher.matches()) {
             travis.markTaskAsNotDone(markAsNotDoneMatcher.group(Enums.RegexGroup.TASK_INDEX.getGroup()));
