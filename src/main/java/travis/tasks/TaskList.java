@@ -60,6 +60,21 @@ public class TaskList {
         return task;
     }
 
+    public String filterByTaskName(String searchInput) {
+        StringBuilder output = new StringBuilder();
+        for (int i = 0; i < this.tasks.size(); i++) {
+            String taskDescription = this.tasks.get(i).toString();
+            if (taskDescription.toLowerCase().contains(searchInput.toLowerCase())) {
+                String fullDescription = (i + 1) + ". " + taskDescription;
+                if (!output.isEmpty()) {
+                    fullDescription = "\n" + fullDescription;
+                }
+                output.append(fullDescription);
+            }
+        }
+        return output.toString();
+    }
+
     @Override
     public String toString() {
         if (this.tasks.isEmpty()) {

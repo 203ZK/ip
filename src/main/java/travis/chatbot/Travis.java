@@ -85,7 +85,8 @@ public class Travis {
     }
 
     public void filterTasks(String searchInput) {
-
+        String filteredTasks = this.taskList.filterByTaskName(searchInput);
+        this.ui.listTasks(filteredTasks);
     }
 
     private void run() {
