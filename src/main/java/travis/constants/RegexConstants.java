@@ -7,4 +7,5 @@ public final class RegexConstants {
     public static final String MARK_AS_DONE_REGEX = "^mark (\\d+)$";
     public static final String MARK_AS_NOT_DONE_REGEX = "^unmark (\\d+)$";
     public static final String DELETE_TASK_REGEX = "^delete (\\d+)$";
+    public static final String FIND_TASK_REGEX = "^find (.*)$";
 }

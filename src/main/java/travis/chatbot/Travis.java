@@ -84,6 +84,10 @@ public class Travis {
         }
     }
 
+    public void filterTasks(String searchInput) {
+
+    }
+
     private void run() {
         this.ui.runUi(this);
     }
