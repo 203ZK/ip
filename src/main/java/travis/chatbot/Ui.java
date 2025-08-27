@@ -4,6 +4,10 @@ import travis.constants.UiConstants;
 
 import java.util.Scanner;
 
+/**
+ * Class for the user interface of the chatbot.
+ * Users interact with the chatbot through CLI commands via this class.
+ */
 public class Ui {
     private final Scanner scanner = new Scanner(System.in);
 
@@ -22,6 +26,10 @@ public class Ui {
         wrap(UiConstants.FAREWELL);
     }
 
+    /**
+     * Repeatedly reads and parses user input until the "bye" command is entered.
+     * @param travis <code>Travis</code> chatbot that is currently running.
+     */
     public void runUi(Travis travis) {
         this.greet();
         String input = this.scanner.nextLine().trim();

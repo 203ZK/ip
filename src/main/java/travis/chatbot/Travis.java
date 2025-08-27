@@ -9,6 +9,10 @@ import travis.tasks.Task;
 
 import java.io.IOException;
 
+/**
+ * Class for the actual Travis chatbot. A <code>Travis</code> object contains its own
+ * <code>Ui</code>, <code>Storage</code> and <code>TaskList</code> fields.
+ */
 public class Travis {
     private final Ui ui;
     private final Storage storage;
@@ -38,16 +42,28 @@ public class Travis {
         this.isExiting = isExiting;
     }
 
+    /**
+     * Lists all existing tasks.
+     */
     public void listTasks() {
         this.ui.listTasks(this.taskList.toString());
     }
 
+    /**
+     * Adds a new task to the task list.
+     * Prints an error message if the input has an invalid format.
+     */
     public void addTask(Task newTask) {
         this.taskList.addTask(newTask);
         this.ui.notifyAddTask(newTask.toString(), this.taskList.getTaskCount());
         this.storage.updateTaskFile(this.taskList.getTaskList());
     }
 
+    /**
+     * Deletes a task from the task list with the given index.
+     * Prints an error message if the index is invalid.
+     * @param taskNumberStr Index of the task to be deleted.
+     */
     public void deleteTask(String taskNumberStr) {
         try {
             int taskNumber = Integer.parseInt(taskNumberStr);
@@ -60,6 +76,10 @@ public class Travis {
         }
     }
 
+    /**
+     * Marks a task with the given index as done.
+     * @param taskNumberStr Index of the task to be marked.
+     */
     public void markTaskAsDone(String taskNumberStr) {
         try {
             int taskNumber = Integer.parseInt(taskNumberStr);
@@ -72,6 +92,10 @@ public class Travis {
         }
     }
 
+    /**
+     * Marks a task with the given index as not done yet.
+     * @param taskNumberStr Index of the task to be unmarked.
+     */
     public void markTaskAsNotDone(String taskNumberStr) {
         try {
             int taskNumber = Integer.parseInt(taskNumberStr);
@@ -84,6 +108,9 @@ public class Travis {
         }
     }
 
+    /**
+     * Runs the Ui of the chatbot.
+     */
     private void run() {
         this.ui.runUi(this);
     }

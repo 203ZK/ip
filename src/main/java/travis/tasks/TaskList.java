@@ -5,6 +5,9 @@ import travis.exceptions.TaskNotFoundException;
 
 import java.util.ArrayList;
 
+/**
+ * Represents a list of tasks.
+ */
 public class TaskList {
     private ArrayList<Task> tasks;
 
@@ -24,6 +27,10 @@ public class TaskList {
         return this.tasks.size();
     }
 
+    /**
+     * Retrieves the task with the given task number.
+     * Throws a <code>TaskNotFoundException</code> if the task number is out of bounds of the task list.
+     */
     public Task getTask(int taskNumber) throws TaskNotFoundException {
         if (taskNumber >= 0 && taskNumber < this.tasks.size()) {
             return this.tasks.get(taskNumber);
@@ -60,6 +67,9 @@ public class TaskList {
         return task;
     }
 
+    /**
+     * String representation of the list of tasks present.
+     */
     @Override
     public String toString() {
         if (this.tasks.isEmpty()) {
