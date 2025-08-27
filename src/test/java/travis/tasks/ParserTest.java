@@ -109,6 +109,15 @@ public class ParserTest {
     }
 
     @Test
+    public void taskCommandParsing_invalidDeadlineDate_exceptionThrown() {
+        try {
+            Task task = Parser.parseTask("deadline submit homework /by 2025-08-4");
+        } catch (InvalidTaskException e) {
+            assertEquals("Sorry, it looks like 2025-08-4 isn't a valid date!", e.getMessage());
+        }
+    }
+
+    @Test
     public void taskCommandParsing_validEvent_returnsEventString() {
         Task task = Parser.parseTask("event meeting /from 4pm /to 6pm");
         assertEquals("[E][?] meeting (from: 4pm to: 6pm)", task.toString());
