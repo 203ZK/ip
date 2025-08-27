@@ -10,7 +10,7 @@ import travis.tasks.Task;
 import java.io.IOException;
 
 /**
- * Represents the actual Travis chatbot. A <code>Travis</code> object contains its own
+ * Class for the actual Travis chatbot. A <code>Travis</code> object contains its own
  * <code>Ui</code>, <code>Storage</code> and <code>TaskList</code> fields.
  */
 public class Travis {
