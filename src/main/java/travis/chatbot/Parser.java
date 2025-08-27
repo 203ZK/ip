@@ -49,7 +49,6 @@ public class Parser {
             travis.listTasks();
         } else if (input.equals("bye")) {
             travis.setIsExiting(true);
-            return false;
         } else {
             try {
                 Task task = Parser.parseTask(input);
