@@ -1,11 +1,12 @@
 package travis.chatbot;
 
 import travis.constants.UiConstants;
+import travis.exceptions.InvalidTaskException;
 
 import java.util.Scanner;
 
 /**
- * Class for the user interface of the chatbot.
+ * Represents the user interface of the chatbot.
  * Users interact with the chatbot through CLI commands via this class.
  */
 public class Ui {
@@ -33,12 +34,14 @@ public class Ui {
     public void runUi(Travis travis) {
         this.greet();
         String input = this.scanner.nextLine().trim();
-        while (travis.isRunning()) {
-            if (input.equals("bye")) {
-                break;
+        while (!input.equals("bye")) {
+            try {
+                Parser.parse(travis, input);
+            } catch (InvalidTaskException e) {
+                this.warnMessage(e.getMessage());
+            } finally {
+                input = scanner.nextLine().trim();
             }
-            Parser.parse(travis, input);
-            input = scanner.nextLine().trim();
         }
         this.scanner.close();
         this.farewell();

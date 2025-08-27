@@ -16,7 +16,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Responsible for parsing user inputs.
+ * Parses user inputs.
  * The <code>Parser</code> uses regular expressions to parse the inputs, throwing exceptions if the format is invalid.
  */
 public class Parser {
@@ -51,15 +51,9 @@ public class Parser {
             travis.deleteTask(deleteTaskMatcher.group(Enums.RegexGroup.TASK_INDEX.getGroup()));
         } else if (input.equals("list")) {
             travis.listTasks();
-        } else if (input.equals("bye")) {
-            travis.setIsExiting(true);
         } else {
-            try {
-                Task task = Parser.parseTask(input);
-                travis.addTask(task);
-            } catch (InvalidTaskException e) {
-                return false;
-            }
+            Task task = Parser.parseTask(input);
+            travis.addTask(task);
         }
         return true;
     }

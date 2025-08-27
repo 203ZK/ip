@@ -10,20 +10,18 @@ import travis.tasks.Task;
 import java.io.IOException;
 
 /**
- * Class for the actual Travis chatbot. A <code>Travis</code> object contains its own
+ * Represents the actual Travis chatbot. A <code>Travis</code> object contains its own
  * <code>Ui</code>, <code>Storage</code> and <code>TaskList</code> fields.
  */
 public class Travis {
     private final Ui ui;
     private final Storage storage;
     private final TaskList taskList;
-    private boolean isExiting;
 
     public Travis(String filePath) {
         this.ui = new Ui();
         this.storage = new Storage(filePath);
         this.taskList = new TaskList();
-        this.isExiting = false;
 
         try {
             this.taskList.setTaskList(this.storage.loadTasks());
@@ -32,14 +30,6 @@ public class Travis {
         } catch (InvalidTaskException e) {
             this.ui.warnLoadInvalidTask();
         }
-    }
-
-    public boolean isRunning() {
-        return !this.isExiting;
-    }
-
-    public void setIsExiting(boolean isExiting) {
-        this.isExiting = isExiting;
     }
 
     /**

@@ -67,12 +67,15 @@ public class TaskList {
         return task;
     }
 
+    /**
+     * Filters the task list for tasks whose descriptions include the search input.
+     */
     public String filterByTaskName(String searchInput) {
         StringBuilder output = new StringBuilder();
         for (int i = 0; i < this.tasks.size(); i++) {
-            String taskDescription = this.tasks.get(i).toString();
-            if (taskDescription.toLowerCase().contains(searchInput.toLowerCase())) {
-                String fullDescription = (i + 1) + ". " + taskDescription;
+            Task task = this.tasks.get(i);
+            if (task.containsString(searchInput)) {
+                String fullDescription = (i + 1) + ". " + task;
                 if (!output.isEmpty()) {
                     fullDescription = "\n" + fullDescription;
                 }
