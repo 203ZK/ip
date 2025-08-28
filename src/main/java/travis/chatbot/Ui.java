@@ -10,7 +10,7 @@ import java.util.Scanner;
  * Users interact with the chatbot through CLI commands via this class.
  */
 public class Ui {
-    private final Scanner scanner = new Scanner(System.in);
+    private final Scanner SCANNER = new Scanner(System.in);
 
     public Ui() {}
 
@@ -33,17 +33,17 @@ public class Ui {
      */
     public void runUi(Travis travis) {
         this.greet();
-        String input = this.scanner.nextLine().trim();
+        String input = this.SCANNER.nextLine().trim();
         while (!input.equals("bye")) {
             try {
                 Parser.parse(travis, input);
             } catch (InvalidTaskException e) {
                 this.warnMessage(e.getMessage());
             } finally {
-                input = scanner.nextLine().trim();
+                input = SCANNER.nextLine().trim();
             }
         }
-        this.scanner.close();
+        this.SCANNER.close();
         this.farewell();
     }
 
