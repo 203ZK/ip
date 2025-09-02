@@ -67,5 +67,6 @@ public class MainWindow extends AnchorPane {
                 DialogBox.getTravisDialog(response, travisImage)
         );
         this.userInput.clear();
+        this.scrollPane.vvalueProperty().bind(this.dialogContainer.heightProperty());
     }
 }
