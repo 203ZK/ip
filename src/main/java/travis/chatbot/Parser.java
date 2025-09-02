@@ -21,25 +21,25 @@ import java.util.regex.Pattern;
  */
 public class Parser {
     // Patterns to match user commands
-    private static final Pattern MARK_AS_DONE_PATTERN = Pattern.compile(RegexConstants.MARK_AS_DONE_REGEX);
-    private static final Pattern MARK_AS_NOT_DONE_PATTERN = Pattern.compile(RegexConstants.MARK_AS_NOT_DONE_REGEX);
-    private static final Pattern DELETE_TASK_PATTERN = Pattern.compile(RegexConstants.DELETE_TASK_REGEX);
-    private static final Pattern FIND_TASK_PATTERN = Pattern.compile(RegexConstants.FIND_TASK_REGEX);
+    private static final Pattern PATTERN_MARK_AS_DONE = Pattern.compile(RegexConstants.REGEX_MARK_AS_DONE);
+    private static final Pattern PATTERN_MARK_AS_NOT_DONE = Pattern.compile(RegexConstants.REGEX_MARK_AS_NOT_DONE);
+    private static final Pattern PATTERN_DELETE_TASK = Pattern.compile(RegexConstants.REGEX_DELETE_TASK);
+    private static final Pattern PATTERN_FIND_TASK = Pattern.compile(RegexConstants.REGEX_FIND_TASK);
 
     // Patterns to match task formats
-    private static final Pattern TO_DO_PATTERN = Pattern.compile(RegexConstants.TO_DO_REGEX);
-    private static final Pattern DEADLINE_PATTERN = Pattern.compile(RegexConstants.DEADLINE_REGEX);
-    private static final Pattern EVENT_PATTERN = Pattern.compile(RegexConstants.EVENT_REGEX);
+    private static final Pattern PATTERN_TO_DO = Pattern.compile(RegexConstants.REGEX_TO_DO);
+    private static final Pattern PATTERN_DEADLINE = Pattern.compile(RegexConstants.REGEX_DEADLINE);
+    private static final Pattern PATTERN_EVENT = Pattern.compile(RegexConstants.REGEX_EVENT);
 
     /**
      * Parses the user's commands.
      * If an existing command is not found, it treats the input as a new task to be added.
      */
     public static String parse(Travis travis, String input) throws InvalidTaskException {
-        Matcher markAsDoneMatcher = MARK_AS_DONE_PATTERN.matcher(input);
-        Matcher markAsNotDoneMatcher = MARK_AS_NOT_DONE_PATTERN.matcher(input);
-        Matcher deleteTaskMatcher = DELETE_TASK_PATTERN.matcher(input);
-        Matcher findTaskMatcher = FIND_TASK_PATTERN.matcher(input);
+        Matcher markAsDoneMatcher = PATTERN_MARK_AS_DONE.matcher(input);
+        Matcher markAsNotDoneMatcher = PATTERN_MARK_AS_NOT_DONE.matcher(input);
+        Matcher deleteTaskMatcher = PATTERN_DELETE_TASK.matcher(input);
+        Matcher findTaskMatcher = PATTERN_FIND_TASK.matcher(input);
 
         if (findTaskMatcher.find()) {
             return travis.filterTasks(findTaskMatcher.group(Enums.RegexGroup.TASK_NAME.getGroup()));
@@ -62,9 +62,9 @@ public class Parser {
      * If the task is of an invalid format, an <code>InvalidTaskException</code> is thrown.
      */
     public static Task parseTask(String input) throws InvalidTaskException {
-        Matcher toDoMatcher = TO_DO_PATTERN.matcher(input);
-        Matcher deadlineMatcher = DEADLINE_PATTERN.matcher(input);
-        Matcher eventMatcher = EVENT_PATTERN.matcher(input);
+        Matcher toDoMatcher = PATTERN_TO_DO.matcher(input);
+        Matcher deadlineMatcher = PATTERN_DEADLINE.matcher(input);
+        Matcher eventMatcher = PATTERN_EVENT.matcher(input);
 
         Task task;
         if (toDoMatcher.find()) {
