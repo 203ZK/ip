@@ -14,13 +14,12 @@ public class Ui {
 
     public Ui() {}
 
-    private static void wrap(String content) {
-        System.out.println(
-                UiConstants.HORIZONTAL_LINE + "\n" + content + "\n" + UiConstants.HORIZONTAL_LINE + "\n");
+    private static String wrap(String content) {
+        return UiConstants.HORIZONTAL_LINE + "\n" + content + "\n" + UiConstants.HORIZONTAL_LINE + "\n";
     }
 
-    public void greet() {
-        wrap(UiConstants.GREETING);
+    public String greet() {
+        return UiConstants.GREETING;
     }
 
     public void farewell() {
@@ -49,39 +48,39 @@ public class Ui {
 
     // ------------------- WARNINGS -------------------
 
-    public void warnMessage(String message) {
-        wrap(message);
+    public String warnMessage(String message) {
+        return message;
     }
 
     public void warnFileNotFound() {
-        wrap(UiConstants.FILE_NOT_FOUND_ERROR);
+        System.out.println(wrap(UiConstants.FILE_NOT_FOUND_ERROR));
     }
 
     public void warnLoadInvalidTask() {
-        wrap(UiConstants.INVALID_TASK_FORMAT_ERROR);
+        System.out.println(wrap(UiConstants.INVALID_TASK_FORMAT_ERROR));
     }
 
     // ------------------- RESPONSES -------------------
 
-    public void listTasks(String taskListStr) {
-        wrap(taskListStr);
+    public String listTasks(String taskListStr) {
+        return wrap(taskListStr);
     }
 
-    public void notifyAddTask(String taskName, int numOfTasks) {
-        wrap(String.format(UiConstants.NEW_TASK, taskName) +
-                String.format(UiConstants.TOTAL_TASKS, numOfTasks));
+    public String notifyAddTask(String taskName, int numOfTasks) {
+        return String.format(UiConstants.NEW_TASK, taskName) +
+                String.format(UiConstants.TOTAL_TASKS, numOfTasks);
     }
 
-    public void notifyDeleteTask(String taskName, int numOfTasks) {
-        wrap(String.format(UiConstants.DELETED_TASK, taskName) +
-                String.format(UiConstants.TOTAL_TASKS, numOfTasks));
+    public String notifyDeleteTask(String taskName, int numOfTasks) {
+        return String.format(UiConstants.DELETED_TASK, taskName) +
+                String.format(UiConstants.TOTAL_TASKS, numOfTasks);
     }
 
-    public void notifyMarkTaskAsDone(String taskName) {
-        wrap(String.format(UiConstants.MARKED_AS_DONE, taskName));
+    public String notifyMarkTaskAsDone(String taskName) {
+        return String.format(UiConstants.MARKED_AS_DONE, taskName);
     }
 
-    public void notifyMarkTaskAsNotDone(String taskName) {
-        wrap(String.format(UiConstants.MARKED_AS_NOT_DONE, taskName));
+    public String notifyMarkTaskAsNotDone(String taskName) {
+        return String.format(UiConstants.MARKED_AS_NOT_DONE, taskName);
     }
 }

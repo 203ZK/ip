@@ -35,27 +35,26 @@ public class Parser {
      * Parses the user's commands.
      * If an existing command is not found, it treats the input as a new task to be added.
      */
-    public static boolean parse(Travis travis, String input) throws InvalidTaskException {
+    public static String parse(Travis travis, String input) throws InvalidTaskException {
         Matcher markAsDoneMatcher = MARK_AS_DONE_PATTERN.matcher(input);
         Matcher markAsNotDoneMatcher = MARK_AS_NOT_DONE_PATTERN.matcher(input);
         Matcher deleteTaskMatcher = DELETE_TASK_PATTERN.matcher(input);
         Matcher findTaskMatcher = FIND_TASK_PATTERN.matcher(input);
 
         if (findTaskMatcher.find()) {
-            travis.filterTasks(findTaskMatcher.group(Enums.RegexGroup.TASK_NAME.getGroup()));
+            return travis.filterTasks(findTaskMatcher.group(Enums.RegexGroup.TASK_NAME.getGroup()));
         } else if (markAsDoneMatcher.matches()) {
-            travis.markTaskAsDone(markAsDoneMatcher.group(Enums.RegexGroup.TASK_INDEX.getGroup()));
+            return travis.markTaskAsDone(markAsDoneMatcher.group(Enums.RegexGroup.TASK_INDEX.getGroup()));
         } else if (markAsNotDoneMatcher.matches()) {
-            travis.markTaskAsNotDone(markAsNotDoneMatcher.group(Enums.RegexGroup.TASK_INDEX.getGroup()));
+            return travis.markTaskAsNotDone(markAsNotDoneMatcher.group(Enums.RegexGroup.TASK_INDEX.getGroup()));
         } else if (deleteTaskMatcher.matches()) {
-            travis.deleteTask(deleteTaskMatcher.group(Enums.RegexGroup.TASK_INDEX.getGroup()));
+            return travis.deleteTask(deleteTaskMatcher.group(Enums.RegexGroup.TASK_INDEX.getGroup()));
         } else if (input.equals("list")) {
-            travis.listTasks();
+            return travis.listTasks();
         } else {
             Task task = Parser.parseTask(input);
-            travis.addTask(task);
+            return travis.addTask(task);
         }
-        return true;
     }
 
     /**

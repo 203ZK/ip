@@ -1,0 +1,72 @@
+package travis.gui;
+
+import javafx.application.Platform;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
+import travis.chatbot.Parser;
+import travis.chatbot.Travis;
+import travis.exceptions.InvalidTaskException;
+
+
+public class MainWindow extends AnchorPane {
+    @FXML
+    private ScrollPane scrollPane;
+    @FXML
+    private VBox dialogContainer;
+    @FXML
+    private TextField userInput;
+    @FXML
+    private Button sendButton;
+
+    private Travis travis;
+
+    private Image travisImage = new Image(this.getClass().getResourceAsStream("/images/TRAVIS.png"));
+    private Image userImage = new Image(this.getClass().getResourceAsStream("/images/WALL-E.png"));
+
+    public void setTravis(Travis travis) {
+        this.travis = travis;
+    }
+
+    @FXML
+    public void initialize() {
+        this.scrollPane.vvalueProperty().bind(this.dialogContainer.heightProperty());
+        this.scrollPane.getContent().setOnScroll(scrollEvent -> {
+            double deltaY = scrollEvent.getDeltaY();
+            this.scrollPane.vvalueProperty().unbind();
+            this.scrollPane.setVvalue(this.scrollPane.getVvalue() - deltaY);
+        });
+    }
+
+    public void setInitialDialog() {
+        DialogBox intro = DialogBox.getTravisDialog(this.travis.getGreeting(), travisImage);
+        this.dialogContainer.getChildren().add(intro);
+    }
+
+    @FXML
+    public void handleUserInput() {
+        String input = this.userInput.getText();
+        if (input.equals("bye")) {
+            Platform.exit();
+            return;
+        }
+
+        String response = "";
+        try {
+            response = Parser.parse(this.travis, input);
+        } catch (InvalidTaskException e) {
+            response = e.getMessage();
+        }
+
+        this.dialogContainer.getChildren().addAll(
+                DialogBox.getUserDialog(input, userImage),
+                DialogBox.getTravisDialog(response, travisImage)
+        );
+        this.userInput.clear();
+        this.scrollPane.vvalueProperty().bind(this.dialogContainer.heightProperty());
+    }
+}
