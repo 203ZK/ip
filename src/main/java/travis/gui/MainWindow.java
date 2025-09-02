@@ -32,6 +32,16 @@ public class MainWindow extends AnchorPane {
         this.travis = travis;
     }
 
+    @FXML
+    public void initialize() {
+        this.scrollPane.vvalueProperty().bind(this.dialogContainer.heightProperty());
+        this.scrollPane.getContent().setOnScroll(scrollEvent -> {
+            double deltaY = scrollEvent.getDeltaY();
+            this.scrollPane.vvalueProperty().unbind();
+            this.scrollPane.setVvalue(this.scrollPane.getVvalue() - deltaY);
+        });
+    }
+
     public void setInitialDialog() {
         DialogBox intro = DialogBox.getTravisDialog(this.travis.getGreeting(), travisImage);
         this.dialogContainer.getChildren().add(intro);
@@ -39,7 +49,7 @@ public class MainWindow extends AnchorPane {
 
     @FXML
     public void handleUserInput() {
-        String input = userInput.getText();
+        String input = this.userInput.getText();
         if (input.equals("bye")) {
             Platform.exit();
             return;
@@ -56,6 +66,6 @@ public class MainWindow extends AnchorPane {
                 DialogBox.getUserDialog(input, userImage),
                 DialogBox.getTravisDialog(response, travisImage)
         );
-        userInput.clear();
+        this.userInput.clear();
     }
 }
