@@ -49,7 +49,7 @@ public class Ui {
     // ------------------- WARNINGS -------------------
 
     public String warnMessage(String message) {
-        return wrap(message);
+        return message;
     }
 
     public void warnFileNotFound() {
