@@ -35,18 +35,18 @@ public class Travis {
     /**
      * Lists all existing tasks.
      */
-    public void listTasks() {
-        this.ui.listTasks(this.taskList.toString());
+    public String listTasks() {
+        return this.taskList.toString();
     }
 
     /**
      * Adds a new task to the task list.
      * Prints an error message if the input has an invalid format.
      */
-    public void addTask(Task newTask) {
+    public String addTask(Task newTask) {
         this.taskList.addTask(newTask);
-        this.ui.notifyAddTask(newTask.toString(), this.taskList.getTaskCount());
         this.storage.updateTaskFile(this.taskList.getTaskList());
+        return this.ui.notifyAddTask(newTask.toString(), this.taskList.getTaskCount());
     }
 
     /**
@@ -54,13 +54,13 @@ public class Travis {
      * Prints an error message if the index is invalid.
      * @param taskNumberStr Index of the task to be deleted.
      */
-    public void deleteTask(String taskNumberStr) {
+    public String deleteTask(String taskNumberStr) {
         try {
             int taskNumber = Integer.parseInt(taskNumberStr);
             Task deletedTask = this.taskList.deleteTask(taskNumber);
-            this.ui.notifyDeleteTask(deletedTask.toString(), this.taskList.getTaskCount());
+            return this.ui.notifyDeleteTask(deletedTask.toString(), this.taskList.getTaskCount());
         } catch (TaskNotFoundException e) {
-            this.ui.warnMessage(e.getMessage());
+            return this.ui.warnMessage(e.getMessage());
         } finally {
             this.storage.updateTaskFile(this.taskList.getTaskList());
         }
@@ -70,13 +70,13 @@ public class Travis {
      * Marks a task with the given index as done.
      * @param taskNumberStr Index of the task to be marked.
      */
-    public void markTaskAsDone(String taskNumberStr) {
+    public String markTaskAsDone(String taskNumberStr) {
         try {
             int taskNumber = Integer.parseInt(taskNumberStr);
             Task completedTask = this.taskList.markTaskAsDone(taskNumber);
-            this.ui.notifyMarkTaskAsDone(completedTask.toString());
+            return this.ui.notifyMarkTaskAsDone(completedTask.toString());
         } catch (TaskNotFoundException e) {
-            this.ui.warnMessage(e.getMessage());
+            return this.ui.warnMessage(e.getMessage());
         } finally {
             this.storage.updateTaskFile(this.taskList.getTaskList());
         }
@@ -86,21 +86,20 @@ public class Travis {
      * Marks a task with the given index as not done yet.
      * @param taskNumberStr Index of the task to be unmarked.
      */
-    public void markTaskAsNotDone(String taskNumberStr) {
+    public String markTaskAsNotDone(String taskNumberStr) {
         try {
             int taskNumber = Integer.parseInt(taskNumberStr);
             Task incompleteTask = this.taskList.markTaskAsNotDone(taskNumber);
-            this.ui.notifyMarkTaskAsNotDone(incompleteTask.toString());
+            return this.ui.notifyMarkTaskAsNotDone(incompleteTask.toString());
         } catch (TaskNotFoundException e) {
-            this.ui.warnMessage(e.getMessage());
+            return this.ui.warnMessage(e.getMessage());
         } finally {
             this.storage.updateTaskFile(this.taskList.getTaskList());
         }
     }
 
-    public void filterTasks(String searchInput) {
-        String filteredTasks = this.taskList.filterByTaskName(searchInput);
-        this.ui.listTasks(filteredTasks);
+    public String filterTasks(String searchInput) {
+        return this.taskList.filterByTaskName(searchInput);
     }
 
     /**
