@@ -18,8 +18,8 @@ public class Ui {
         return UiConstants.HORIZONTAL_LINE + "\n" + content + "\n" + UiConstants.HORIZONTAL_LINE + "\n";
     }
 
-    public void greet() {
-        wrap(UiConstants.GREETING);
+    public String greet() {
+        return UiConstants.GREETING;
     }
 
     public void farewell() {

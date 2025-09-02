@@ -109,6 +109,10 @@ public class Travis {
         this.ui.runUi(this);
     }
 
+    public String getGreeting() {
+        return this.ui.greet();
+    }
+
     public static void main(String[] args) {
         Travis travis = new Travis(TaskListConstants.FILE_PATH);
         travis.run();

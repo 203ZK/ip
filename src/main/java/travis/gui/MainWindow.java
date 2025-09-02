@@ -32,6 +32,11 @@ public class MainWindow extends AnchorPane {
         this.travis = travis;
     }
 
+    public void setInitialDialog() {
+        DialogBox intro = DialogBox.getTravisDialog(this.travis.getGreeting(), travisImage);
+        this.dialogContainer.getChildren().add(intro);
+    }
+
     @FXML
     public void handleUserInput() {
         String input = userInput.getText();
