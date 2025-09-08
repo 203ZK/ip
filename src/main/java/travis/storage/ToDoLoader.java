@@ -2,6 +2,7 @@ package travis.storage;
 
 import travis.constants.Enums;
 import travis.exceptions.LoadInvalidTaskException;
+import travis.tasks.Task;
 import travis.tasks.ToDo;
 
 public class ToDoLoader implements Loader {
@@ -10,6 +11,8 @@ public class ToDoLoader implements Loader {
         String[] fields = line.split(" \\| ");
         try {
             String status = fields[Enums.FileInputArg.TASK_STATUS.ordinal()];
+            assert status.equals("X") || status.equals("?"): "Unknown status";
+
             String taskDescription = fields[Enums.FileInputArg.TASK_DESCRIPTION.ordinal()];
             ToDo todo = new ToDo(taskDescription);
             if (status.equals("X")) {

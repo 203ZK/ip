@@ -57,6 +57,8 @@ public class Travis {
     public String deleteTask(String taskNumberStr) {
         try {
             int taskNumber = Integer.parseInt(taskNumberStr);
+            assert taskNumber >= 0: "Task index must be non-negative!";
+
             Task deletedTask = this.taskList.deleteTask(taskNumber);
             return this.ui.notifyDeleteTask(deletedTask.toString(), this.taskList.getTaskCount());
         } catch (TaskNotFoundException e) {
@@ -73,6 +75,8 @@ public class Travis {
     public String markTaskAsDone(String taskNumberStr) {
         try {
             int taskNumber = Integer.parseInt(taskNumberStr);
+            assert taskNumber >= 0: "Task index must be non-negative!";
+
             Task completedTask = this.taskList.markTaskAsDone(taskNumber);
             return this.ui.notifyMarkTaskAsDone(completedTask.toString());
         } catch (TaskNotFoundException e) {
@@ -89,6 +93,8 @@ public class Travis {
     public String markTaskAsNotDone(String taskNumberStr) {
         try {
             int taskNumber = Integer.parseInt(taskNumberStr);
+            assert taskNumber >= 0: "Task index must be non-negative!";
+
             Task incompleteTask = this.taskList.markTaskAsNotDone(taskNumber);
             return this.ui.notifyMarkTaskAsNotDone(incompleteTask.toString());
         } catch (TaskNotFoundException e) {
