@@ -16,6 +16,8 @@ public class DeadlineLoader implements Loader {
         String[] fields = line.split(RegexConstants.REGEX_SPLIT_FILE_INPUT);
         try {
             String status = fields[Enums.FileInputArg.TASK_STATUS.ordinal()];
+            assert status.equals("X") || status.equals("?"): "Unknown status";
+
             String taskDescription = fields[Enums.FileInputArg.TASK_DESCRIPTION.ordinal()];
             String timeStr = fields[Enums.FileInputArg.TASK_START.ordinal()];
             LocalDate time = LocalDate.parse(timeStr, formatter);

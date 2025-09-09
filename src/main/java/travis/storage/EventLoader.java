@@ -11,11 +11,14 @@ public class EventLoader implements Loader {
         String[] fields = line.split(RegexConstants.REGEX_SPLIT_FILE_INPUT);
         try {
             String status = fields[Enums.FileInputArg.TASK_STATUS.ordinal()];
+            assert status.equals("X") || status.equals("?"): "Unknown status";
+
             String taskDescription = fields[Enums.FileInputArg.TASK_DESCRIPTION.ordinal()];
             String start = fields[Enums.FileInputArg.TASK_START.ordinal()];
             String end = fields[Enums.FileInputArg.TASK_END.ordinal()];
 
             Event event = new Event(taskDescription, start, end);
+
             if (status.equals("X")) {
                 event.markAsDone();
             }
