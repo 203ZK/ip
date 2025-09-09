@@ -32,7 +32,9 @@ public class TaskList {
      * Throws a <code>TaskNotFoundException</code> if the task number is out of bounds of the task list.
      */
     public Task getTask(int taskNumber) throws TaskNotFoundException {
-        if (taskNumber >= 0 && taskNumber < this.tasks.size()) {
+        assert taskNumber >= 0: "Task index must be non-negative!";
+
+        if (taskNumber < this.tasks.size()) {
             return this.tasks.get(taskNumber);
         } else if (this.tasks.isEmpty()) {
             throw new TaskNotFoundException(
@@ -57,13 +59,19 @@ public class TaskList {
 
     public Task markTaskAsDone(int taskNumber) throws TaskNotFoundException {
         Task task = this.getTask(taskNumber - 1);
+
         task.markAsDone();
+        assert task.isDone: "Task not marked as done!";
+
         return task;
     }
 
     public Task markTaskAsNotDone(int taskNumber) throws TaskNotFoundException {
         Task task = this.getTask(taskNumber - 1);
+
         task.markAsNotDone();
+        assert !task.isDone: "Task not marked as not done!";
+
         return task;
     }
 

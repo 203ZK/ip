@@ -13,11 +13,13 @@ public class DeadlineLoader implements Loader {
         String[] fields = line.split(" \\| ");
         try {
             String status = fields[Enums.FileInputArg.TASK_STATUS.ordinal()];
+            assert status.equals("X") || status.equals("?"): "Unknown status";
+
             String taskDescription = fields[Enums.FileInputArg.TASK_DESCRIPTION.ordinal()];
             String timeStr = fields[Enums.FileInputArg.TASK_START.ordinal()];
-
             LocalDate time = LocalDate.parse(timeStr, DateTimeFormatter.ofPattern("MMM dd yyyy"));
             Deadline deadline = new Deadline(taskDescription, time);
+
             if (status.equals("X")) {
                 deadline.markAsDone();
             }
