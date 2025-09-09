@@ -71,6 +71,7 @@ public class Parser {
             String taskDescription = toDoMatcher.group(Enums.RegexGroup.TASK_NAME.getGroup());
             task = new ToDo(taskDescription);
             return task;
+
         } else if (deadlineMatcher.find()) {
             String taskDescription = deadlineMatcher.group(Enums.RegexGroup.TASK_NAME.getGroup());
             String deadline = deadlineMatcher.group(Enums.RegexGroup.DEADLINE.getGroup());
@@ -88,6 +89,7 @@ public class Parser {
             String end = eventMatcher.group(Enums.RegexGroup.END_DATE.getGroup());
             task = new Event(taskDescription, start, end);
             return task;
+
         } else {
             throw new InvalidTaskException(TaskListConstants.UNKNOWN_INPUT);
         }

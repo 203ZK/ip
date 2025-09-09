@@ -93,6 +93,7 @@ public class TaskList {
         if (this.tasks.isEmpty()) {
             return TaskListConstants.NO_TASKS + " " + TaskListConstants.TRY_ADDING_TASKS;
         }
+
         StringBuilder output = new StringBuilder();
         for (int i = 0; i < this.tasks.size(); i++) {
             String taskDescription = (i + 1) + ". " + this.tasks.get(i).toString();
@@ -101,6 +102,7 @@ public class TaskList {
             }
             output.append(taskDescription);
         }
+
         return output.toString();
     }
 }

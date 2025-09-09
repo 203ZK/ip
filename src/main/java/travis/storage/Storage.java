@@ -2,6 +2,7 @@ package travis.storage;
 
 import travis.constants.Enums;
 import travis.constants.TaskListConstants;
+import travis.exceptions.InvalidTaskException;
 import travis.exceptions.LoadInvalidTaskException;
 import travis.tasks.Task;
 
@@ -45,10 +46,11 @@ public class Storage {
                     DeadlineLoader deadlineLoader = new DeadlineLoader();
                     yield deadlineLoader.load(line);
                 }
-                default -> {
+                case 'E' -> {
                     EventLoader eventLoader = new EventLoader();
                     yield eventLoader.load(line);
                 }
+                default -> throw new LoadInvalidTaskException(line);
             };
             tasks.add(task);
         }
