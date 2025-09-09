@@ -22,8 +22,8 @@ public class Ui {
         return UiConstants.GREETING;
     }
 
-    public void farewell() {
-        wrap(UiConstants.FAREWELL);
+    public String farewell() {
+        return UiConstants.FAREWELL;
     }
 
     /**
@@ -33,6 +33,7 @@ public class Ui {
     public void runUi(Travis travis) {
         this.greet();
         String input = this.scanner.nextLine().trim();
+
         while (!input.equals("bye")) {
             try {
                 Parser.parse(travis, input);
@@ -42,8 +43,9 @@ public class Ui {
                 input = scanner.nextLine().trim();
             }
         }
+
         this.scanner.close();
-        this.farewell();
+        System.out.println(wrap(this.farewell()));
     }
 
     // ------------------- WARNINGS -------------------
