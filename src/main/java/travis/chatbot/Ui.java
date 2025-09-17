@@ -64,10 +64,6 @@ public class Ui {
 
     // ------------------- RESPONSES -------------------
 
-    public String listTasks(String taskListStr) {
-        return wrap(taskListStr);
-    }
-
     public String notifyAddTask(String taskName, int numOfTasks) {
         return String.format(UiConstants.NEW_TASK, taskName)
                 + String.format(UiConstants.TOTAL_TASKS, numOfTasks);
