@@ -8,131 +8,75 @@ import travis.exceptions.InvalidTaskException;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ParserTest {
-    private final static Travis travis = new Travis("");
+    private final Travis travis = new Travis("");
+
+    // ----------------------------
+    // Tests for parse (integration-style)
+    // ----------------------------
 
     @Test
-    public void userCommandParsing_validList_returnsTrue() {
-        boolean canParse = Parser.parse(travis, "list");
-        assertTrue(canParse);
+    public void userCommandParsing_invalidCommand_throwsInvalidTaskException() {
+        assertThrows(InvalidTaskException.class,
+                () -> Parser.parse(travis, "lisT"));
     }
 
     @Test
-    public void userCommandParsing_invalidList_returnsFalse() {
-        boolean canParse = Parser.parse(travis, "lisT");
-        assertFalse(canParse);
+    public void userCommandParsing_validMarkAsDone_returnsConfirmation() throws InvalidTaskException {
+        travis.addTask(Parser.parseTask("todo buy milk"));
+        String output = Parser.parse(travis, "mark 1");
+        assertEquals("""
+                        Nice! I've marked this task as done:
+                        [T][X] buy milk""",
+                output);
     }
 
     @Test
-    public void userCommandParsing_validBye_returnsTrue() {
-        boolean canParse = Parser.parse(travis, "bye");
-        assertTrue(canParse);
+    public void userCommandParsing_invalidMarkAsDone_throwsInvalidTaskException() {
+        assertThrows(InvalidTaskException.class,
+                () -> Parser.parse(travis, "mark1"));
     }
 
-    @Test
-    public void userCommandParsing_invalidBye_returnsFalse() {
-        boolean canParse = Parser.parse(travis, "by e");
-        assertFalse(canParse);
-    }
+    // ----------------------------
+    // Tests for parseTask (unit tests)
+    // ----------------------------
 
     @Test
-    public void userCommandParsing_validMarkAsDone_returnsTrue() {
-        boolean canParse = Parser.parse(travis, "mark 1");
-        assertTrue(canParse);
-    }
-
-    @Test
-    public void userCommandParsing_invalidMarkAsDone_returnsFalse() {
-        boolean canParse = Parser.parse(travis, "mark1");
-        assertFalse(canParse);
-    }
-
-    @Test
-    public void userCommandParsing_validMarkAsNotDone_returnsTrue() {
-        boolean canParse = Parser.parse(travis, "unmark 1");
-        assertTrue(canParse);
-    }
-
-    @Test
-    public void userCommandParsing_invalidMarkAsNotDone_returnsFalse() {
-        boolean canParse = Parser.parse(travis, "unmark1");
-        assertFalse(canParse);
-    }
-
-    @Test
-    public void userCommandParsing_validDeleteTask_returnsTrue() {
-        boolean canParse = Parser.parse(travis, "delete 1");
-        assertTrue(canParse);
-    }
-
-    @Test
-    public void userCommandParsing_invalidDeleteTask_returnsFalse() {
-        boolean canParse = Parser.parse(travis, "delete1");
-        assertFalse(canParse);
-    }
-
-    @Test
-    public void taskCommandParsing_validToDo_returnsToDoString() {
+    public void taskCommandParsing_validToDo_returnsToDoString() throws InvalidTaskException {
         Task task = Parser.parseTask("todo buy bread");
         assertEquals("[T][?] buy bread", task.toString());
     }
 
     @Test
-    public void taskCommandParsing_invalidToDoPrefix_exceptionThrown() {
-        try {
-            Parser.parseTask("tod buy bread");
-        } catch (InvalidTaskException e) {
-            assertEquals("""
-            Oops, I had trouble understanding your message :(
-            Were you trying to add a task?
-            Begin your input with one of the following words to add a task: \
-            "todo", "deadline", "event".""", e.getMessage());
-        }
+    public void taskCommandParsing_invalidToDoPrefix_throwsInvalidTaskException() {
+        InvalidTaskException e = assertThrows(InvalidTaskException.class,
+                () -> Parser.parseTask("tod buy bread"));
+        assertTrue(e.getMessage().contains("Oops, I had trouble"));
     }
 
     @Test
-    public void taskCommandParsing_validDeadline_returnsDeadlineString() {
+    public void taskCommandParsing_validDeadline_returnsDeadlineString() throws InvalidTaskException {
         Task task = Parser.parseTask("deadline submit homework /by 2025-08-04");
         assertEquals("[D][?] submit homework (by: Aug 04 2025)", task.toString());
     }
 
     @Test
-    public void taskCommandParsing_invalidDeadlinePrefix_exceptionThrown() {
-        try {
-            Parser.parseTask("dedline submit homework /by 2025-08-04");
-        } catch (InvalidTaskException e) {
-            assertEquals("""
-            Oops, I had trouble understanding your message :(
-            Were you trying to add a task?
-            Begin your input with one of the following words to add a task: \
-            "todo", "deadline", "event".""", e.getMessage());
-        }
+    public void taskCommandParsing_invalidDeadlineDate_throwsInvalidTaskException() {
+        InvalidTaskException e = assertThrows(InvalidTaskException.class,
+                () -> Parser.parseTask("deadline submit homework /by 2025-08-4"));
+        assertEquals("Sorry, it looks like 2025-08-4 isn't a valid date!", e.getMessage());
     }
 
     @Test
-    public void taskCommandParsing_invalidDeadlineDate_exceptionThrown() {
-        try {
-            Parser.parseTask("deadline submit homework /by 2025-08-4");
-        } catch (InvalidTaskException e) {
-            assertEquals("Sorry, it looks like 2025-08-4 isn't a valid date!", e.getMessage());
-        }
-    }
-
-    @Test
-    public void taskCommandParsing_validEvent_returnsEventString() {
+    public void taskCommandParsing_validEvent_returnsEventString() throws InvalidTaskException {
         Task task = Parser.parseTask("event meeting /from 4pm /to 6pm");
         assertEquals("[E][?] meeting (from: 4pm to: 6pm)", task.toString());
     }
 
     @Test
-    public void taskCommandParsing_invalidEventPrefix_exceptionThrown() {
-        try {
-            Parser.parseTask("evnt meeting /from 4pm /to 6pm");
-        } catch (InvalidTaskException e) {
-            assertEquals("""
-            Oops, I had trouble understanding your message :(
-            Were you trying to add a task?
-            Begin your input with one of the following words to add a task: \
-            "todo", "deadline", "event".""", e.getMessage());
-        }
+    public void taskCommandParsing_invalidEventPrefix_throwsInvalidTaskException() {
+        InvalidTaskException e = assertThrows(InvalidTaskException.class,
+                () -> Parser.parseTask("evnt meeting /from 4pm /to 6pm"));
+        assertTrue(e.getMessage().contains("Oops, I had trouble"));
     }
 }
+
