@@ -46,6 +46,9 @@ while the second is either `X` (completed) or `?` (not completed).
 
 If there are no existing tasks, TRAVIS will say so and prompt you to add new tasks :)
 
+The user may also find tasks that contain a specific search input using `find [search input]`.
+This will display all tasks whose task name contains the search input.
+
 ## Mark and unmarking tasks
 
 To mark a task as done or not done, type `mark [task number]` or `unmark [task number]`, respectively.
