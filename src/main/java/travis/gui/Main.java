@@ -21,6 +21,7 @@ public class Main extends Application {
 
             Scene scene = new Scene(ap);
             stage.setScene(scene);
+            stage.setTitle("TRAVIS");
             fxmlLoader.<MainWindow>getController().setTravis(this.travis);  // inject the Duke instance
             fxmlLoader.<MainWindow>getController().setInitialDialog();
 
