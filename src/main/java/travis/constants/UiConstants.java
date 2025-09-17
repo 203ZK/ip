@@ -11,4 +11,5 @@ public final class UiConstants {
     public static final String MARKED_AS_NOT_DONE = "Ok, I've marked this task as not done yet:\n%s";
     public static final String FILE_NOT_FOUND_ERROR = "Error: Could not find tasks.txt file.";
     public static final String INVALID_TASK_FORMAT_ERROR = "Error: Invalid task format found in tasks.txt.";
+    public static final String NO_MATCHING_TASKS_FOUND = "Oops! There are no tasks that match your search input :(";
 }

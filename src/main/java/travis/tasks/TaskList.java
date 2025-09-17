@@ -1,6 +1,7 @@
 package travis.tasks;
 
 import travis.constants.TaskListConstants;
+import travis.constants.UiConstants;
 import travis.exceptions.TaskNotFoundException;
 
 import java.util.ArrayList;
@@ -90,7 +91,7 @@ public class TaskList {
                 output.append(fullDescription);
             }
         }
-        return output.toString();
+        return output.isEmpty() ? UiConstants.NO_MATCHING_TASKS_FOUND : output.toString();
     }
 
     /**

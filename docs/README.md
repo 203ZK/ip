@@ -1,6 +1,6 @@
 # TRAVIS User Guide
 
-![image](./UI.png)
+![image](Ui.png)
 
 Welcome to the **TRAVIS** chatbot, where you can keep track of your to-dos,
 your deadlines, as well as the major events in your life!
